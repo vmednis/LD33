@@ -37,3 +37,7 @@ proj.win32/Release.win32/
 # Visual Studio junk
 *.sdf
 *.opensdf
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
