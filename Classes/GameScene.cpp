@@ -27,23 +27,32 @@ bool GameScene::init()
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 360, 120 }, PhysicsMaterial());
+		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(), {0, -60});
 		groundPhysicsBody->setDynamic(false);
 		Sprite * node;
-		if (i != 1)
-		{
-			node = Sprite::create("uptown/sprites/grass.png");
-		}
-		else
+		if (i == 0)
 		{
 			node = Sprite::create("uptown/sprites/street.png");
 		}
+		else
+		{
+			node = Sprite::create("uptown/sprites/grass.png");
+		}
 		node->setPhysicsBody(groundPhysicsBody);
 		node->setAnchorPoint({ 0.0, 0.0 });
-		node->setPosition(Vec2(i * 360, 0));
+		node->setPosition(Vec2(i * 540, 0));
 		addChild(node);
-		groundNodes.push_back(node);
+		groundSprites.push_back(node);
 	}
+	
+	//Add truck
+	auto truckPhysicsObject = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial());
+	truckPhysicsObject->setDynamic(false);
+	truckSprite = Sprite::create("uptown/sprites/garbage_truck.png");
+	truckSprite->setAnchorPoint({ 0.0, 0.0 });
+	truckSprite->setPhysicsBody(truckPhysicsObject);
+	truckSprite->setPosition(240, 120);
+	addChild(truckSprite);
 
 	//Create event handlers
 	auto eventListener = EventListenerKeyboard::create();
