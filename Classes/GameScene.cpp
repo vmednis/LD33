@@ -48,7 +48,7 @@ bool GameScene::init()
 	//Add truck
 	auto truckPhysicsBody = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial());
 	truckPhysicsBody->setDynamic(false);
-	truckSprite = Sprite::create("uptown/sprites/garbage_truck.png");
+	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
 	truckSprite->setPhysicsBody(truckPhysicsBody);
 	truckSprite->setPosition(240, 120);
@@ -75,7 +75,7 @@ bool GameScene::init()
 	//Enable update function
 	scheduleUpdate();
 
-	CCLOG("Scene inited successfully");
+	CCLOG("GameScene initialized successfully");
 	return true;
 }
 
