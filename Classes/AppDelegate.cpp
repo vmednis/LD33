@@ -5,9 +5,11 @@
 USING_NS_CC;
 
 static cocos2d::Size designResolutionSize = cocos2d::Size(1920, 1080);
-static cocos2d::Size smallResolutionSize = cocos2d::Size(854, 480);
-static cocos2d::Size mediumResolutionSize = cocos2d::Size(1280, 720);
-static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
+static cocos2d::Size extraSmallResolutionSize = cocos2d::Size(1152, 648);
+static cocos2d::Size smallResolutionSize = cocos2d::Size(1280, 720);
+static cocos2d::Size mediumResolutionSize = cocos2d::Size(1536, 864);
+static cocos2d::Size largeResolutionSize = cocos2d::Size(1792, 1008);
+static cocos2d::Size extraLargeResolutionSize = cocos2d::Size(1920, 1080);
 
 AppDelegate::AppDelegate() {
 
@@ -51,7 +53,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
 	//TODO: Make this pretier
-	glview->setFrameSize(smallResolutionSize.width, smallResolutionSize.height);
+	glview->setFrameSize(extraSmallResolutionSize.width, extraSmallResolutionSize.height);
 
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
