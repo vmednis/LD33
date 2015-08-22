@@ -46,13 +46,25 @@ bool GameScene::init()
 	}
 	
 	//Add truck
-	auto truckPhysicsObject = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial());
-	truckPhysicsObject->setDynamic(false);
+	auto truckPhysicsBody = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial());
+	truckPhysicsBody->setDynamic(false);
 	truckSprite = Sprite::create("uptown/sprites/garbage_truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
-	truckSprite->setPhysicsBody(truckPhysicsObject);
+	truckSprite->setPhysicsBody(truckPhysicsBody);
 	truckSprite->setPosition(240, 120);
 	addChild(truckSprite);
+
+	//Add garbage can and the hand
+	auto garbageCanPhysicsBody = PhysicsBody::createBox({ 24, 126 }, PhysicsMaterial(), {36, 3});
+	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { 25, -3 }));
+	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { -47, -3 }));
+	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 72, 2 }, PhysicsMaterial(), { -10, -60 }));
+	garbageCanPhysicsBody->setDynamic(false);
+	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
+	garbageCanSprite->setPhysicsBody(garbageCanPhysicsBody);
+	garbageCanSprite->setAnchorPoint({ 1.0, 1.0 });
+	garbageCanSprite->setPosition(252, 324);
+	addChild(garbageCanSprite);
 
 	//Create event handlers
 	auto eventListener = EventListenerKeyboard::create();
