@@ -2,6 +2,9 @@
 
 USING_NS_CC;
 
+void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e);
+void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e);
+
 cocos2d::Scene* GameScene::createScene()
 {
 	//Create and return scene with instance of this class attached as a child
@@ -33,6 +36,12 @@ bool GameScene::init()
 		groundNodes.push_back(node);
 	}
 
+	//Create event handlers
+	auto eventListener = EventListenerKeyboard::create();
+	eventListener->onKeyPressed = keyboardEventHandlerOnPressed;
+	eventListener->onKeyReleased = keyboardEventHandlerOnReleased;
+	_eventDispatcher->addEventListenerWithFixedPriority(eventListener, 1);
+
 	//Enable update function
 	scheduleUpdate();
 
@@ -45,3 +54,20 @@ void GameScene::update(float delta)
 
 }
 
+void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
+{
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		CCLOG("Spacebar was pressed");
+	}
+}
+
+void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
+{
+	switch (keycode)
+	{
+	case EventKeyboard::KeyCode::KEY_SPACE:
+		CCLOG("Spacebar was released");
+	}
+}
