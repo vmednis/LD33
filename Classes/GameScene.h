@@ -17,5 +17,5 @@ public:
 	//Generates create function
 	CREATE_FUNC(GameScene);
 private:
-	std::vector<Node *> groundNodes;
+	std::vector<cocos2d::Sprite *> groundNodes;
 };

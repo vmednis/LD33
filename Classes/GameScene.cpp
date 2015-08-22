@@ -27,11 +27,20 @@ bool GameScene::init()
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 128, 128 }, PhysicsMaterial(), { 64, 64 });
+		auto groundPhysicsBody = PhysicsBody::createBox({ 360, 120 }, PhysicsMaterial());
 		groundPhysicsBody->setDynamic(false);
-		auto node = Node::create();
+		Sprite * node;
+		if (i != 1)
+		{
+			node = Sprite::create("uptown/sprites/grass.png");
+		}
+		else
+		{
+			node = Sprite::create("uptown/sprites/street.png");
+		}
 		node->setPhysicsBody(groundPhysicsBody);
-		node->setPosition(Vec2(i * 128, 0));
+		node->setAnchorPoint({ 0.0, 0.0 });
+		node->setPosition(Vec2(i * 360, 0));
 		addChild(node);
 		groundNodes.push_back(node);
 	}
