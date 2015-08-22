@@ -1,5 +1,6 @@
 #pragma once
 #include "cocos2d.h"
+#include <vector>
 
 class GameScene : public cocos2d::Layer
 {
@@ -15,4 +16,6 @@ public:
 
 	//Generates create function
 	CREATE_FUNC(GameScene);
+private:
+	std::vector<Node *> groundNodes;
 };

@@ -1,4 +1,3 @@
-#include <vector>
 #include "GameScene.h"
 
 USING_NS_CC;
@@ -23,8 +22,7 @@ bool GameScene::init()
 	}
 
 	//Ground
-	std::vector<Node *> groundNodes;
-	for (unsigned int i = 0; i < 10; i++)
+	for (unsigned int i = 0; i < 20; i++)
 	{
 		auto groundPhysicsBody = PhysicsBody::createBox({ 128, 128 }, PhysicsMaterial(), { 64, 64 });
 		groundPhysicsBody->setDynamic(false);
