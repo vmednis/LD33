@@ -1,6 +1,7 @@
 #include "AppDelegate.h"
 #include "HelloWorldScene.h"
 #include "GameScene.h"
+#include "GameConfig.h"
 
 USING_NS_CC;
 
@@ -53,7 +54,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
 	//TODO: Make this pretier
-	glview->setFrameSize(extraSmallResolutionSize.width, extraSmallResolutionSize.height);
+	glview->setFrameSize(CURRENT_RESOLUTION.width, CURRENT_RESOLUTION.height);
 
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
