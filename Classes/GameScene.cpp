@@ -56,7 +56,7 @@ bool GameScene::init()
 
 	//Add garbage can and the hand
 	auto garbageCanPhysicsBody = PhysicsBody::createBox({ 24, 126 }, PhysicsMaterial(), {36, 3});
-	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { 25, -3 }));
+	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { 23, -3 }));
 	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { -47, -3 }));
 	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 72, 2 }, PhysicsMaterial(), { -10, -60 }));
 	garbageCanPhysicsBody->setDynamic(false);
