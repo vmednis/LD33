@@ -51,12 +51,29 @@ bool GameScene::init()
 	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { 23, -3 }));
 	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { -47, -3 }));
 	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 72, 2 }, PhysicsMaterial(), { -10, -60 }));
-	garbageCanPhysicsBody->setDynamic(false);
+	garbageCanPhysicsBody->setDynamic(true);
 	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
 	garbageCanSprite->setPhysicsBody(garbageCanPhysicsBody);
 	garbageCanSprite->setAnchorPoint({ 1.0, 1.0 });
 	garbageCanSprite->setPosition(252, 324);
 	addChild(garbageCanSprite);
+
+	//Add garbage can joint
+	auto garbageCanJoint = PhysicsJointPin::construct(garbageCanPhysicsBody, truckPhysicsBody, { 252, 324 });
+	getPhysicsWorld()->addJoint(garbageCanJoint);
+	auto garbageCanLimiter = PhysicsJointRotaryLimit::construct(truckPhysicsBody, garbageCanPhysicsBody, 0.0, (float) M_PI_2);
+	getPhysicsWorld()->addJoint(garbageCanLimiter);
+	garbageCanPhysicsBody->setAngularVelocity(0.5);
+	//auto garbageCanMotor = PhysicsJointMotor::construct(garbageCanPhysicsBody, truckPhysicsBody, -2);
+	//getPhysicsWorld()->addJoint(garbageCanMotor);
+
+	//Test garbage
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial());
+	garbagePhysicsBody->setDynamic(true);
+	auto node = Node::create();
+	node->setPhysicsBody(garbagePhysicsBody);
+	node->setPosition({ 225 , 330 });
+	addChild(node);
 
 	//Create event handlers
 	auto eventListener = EventListenerKeyboard::create();
