@@ -2,12 +2,9 @@
 #include "cocos2d.h"
 #include <vector>
 
-class GameScene : public cocos2d::Layer
+class GameScene : public cocos2d::Scene
 {
 public:
-	//Returns a scene with this layer as a child
-	static cocos2d::Scene* createScene();
-	
 	//Get called on creation
 	virtual bool init();
 

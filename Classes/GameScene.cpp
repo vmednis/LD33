@@ -5,24 +5,16 @@ USING_NS_CC;
 void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e);
 void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e);
 
-cocos2d::Scene* GameScene::createScene()
-{
-	//Create and return scene with instance of this class attached as a child
-	auto scene = Scene::createWithPhysics();
-	//Enable physics debug
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-	auto layer = GameScene::create();
-	scene->addChild(layer);
-	return scene;
-}
-
 bool GameScene::init()
 {
 	//Init super class
-	if (!Layer::init())
+	if (!Scene::initWithPhysics())
 	{
 		return false;
 	}
+
+	//Enable physics debug
+	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)

@@ -40,6 +40,6 @@ bool MenuScene::init()
 
 void MenuScene::menuStart(Ref* pSender)
 {
-	auto scene = GameScene::createScene();
+	auto scene = GameScene::create();
 	Director::getInstance()->replaceScene(scene);
 }
