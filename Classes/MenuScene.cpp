@@ -3,19 +3,10 @@
 
 USING_NS_CC;
 
-cocos2d::Scene* MenuScene::createScene()
-{
-	//Create and return scene with instance of this class attached as a child
-	auto scene = Scene::create();
-	auto layer = MenuScene::create();
-	scene->addChild(layer);
-	return scene;
-}
-
 bool MenuScene::init()
 {
 	//Init super class
-	if (!Layer::init())
+	if (!Scene::init())
 	{
 		return false;
 	}
