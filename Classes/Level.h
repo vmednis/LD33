@@ -1,5 +1,7 @@
 #pragma once
 #include "cocos2d.h"
+#include "ScoreBox.h"
+#include <vector>
 
 class Level
 {
@@ -23,6 +25,7 @@ public:
 	void setWorld(cocos2d::Node * world) { this->world = world; }
 	cocos2d::Node * getWorld() { return world; }
 private:
+	std::vector<ScoreBox *> scoreBoxes;
 	cocos2d::Vec2 size;
 	cocos2d::Node * world;
 };
