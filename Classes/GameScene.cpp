@@ -70,11 +70,11 @@ bool GameScene::init()
 	catapultLocation.x = 204;
 	catapultLocation.y = 300;
 
-	//Create target sprite
-	target = Sprite::create("uptown/sprites/garbage_can.png");
-	target->setAnchorPoint({ 0.5, 0.75 });
-	target->setPosition(catapultLocation);
-	world->addChild(target, RenderOrder::GarbageCan);
+	//Create garbageCanSprite
+	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
+	garbageCanSprite->setAnchorPoint({ 0.5, 0.75 });
+	garbageCanSprite->setPosition(catapultLocation);
+	world->addChild(garbageCanSprite, RenderOrder::GarbageCan);
 
 	//Create event handlers
 	//Keyboard
@@ -124,10 +124,10 @@ void GameScene::mouseEventHandlerOnDown(Event * e)
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 	if (catapultReady)
 	{
-		//Start moving the target
+		//Start moving the garbage can
 		catapultPulling = true;
 		catapultReady = false;
-		moveTarget({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
+		moveGarbageCan({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
 	}
 }
 
@@ -139,7 +139,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		//Shoot
 		catapultPulling = false;
 		//Calculate projectile velocity
-		Vec2 shootingVelocity = (target->getPosition() - catapultLocation) * -1;
+		Vec2 shootingVelocity = (garbageCanSprite->getPosition() - catapultLocation) * -1;
 		shootingVelocity.x = pow(sqrt(shootingVelocity.x / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
 		shootingVelocity.y = pow(sqrt(shootingVelocity.y / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
 
@@ -149,10 +149,10 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		garbagePhysicsBody->setVelocity(shootingVelocity);
 		auto node = Node::create();
 		node->setPhysicsBody(garbagePhysicsBody);
-		node->setPosition(target->getPosition());
+		node->setPosition(garbageCanSprite->getPosition());
 		world->addChild(node, RenderOrder::Garbage);
 
-		//Start moving target back to it's initial position
+		//Start moving garbage can back to it's initial position
 		auto moveAction = MoveTo::create(1.0, catapultLocation);
 		auto moveActionEased = EaseElasticOut::create(moveAction->clone());
 		auto rotateAction = RotateTo::create(1.5, 0);
@@ -160,7 +160,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		CCLOG("test");
 		auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
 		CCLOG("test");
-		target->runAction(actionSpawn);
+		garbageCanSprite->runAction(actionSpawn);
 
 		CCLOG("Shooting!");
 	}
@@ -171,12 +171,12 @@ void GameScene::mouseEventHandlerOnMove(Event * e)
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 	if (catapultPulling)
 	{
-		//Move target to the new positions
-		moveTarget({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
+		//Move garbage can to the new positions
+		moveGarbageCan({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
 	}
 }
 
-void GameScene::moveTarget(Vec2 mouseLocation)
+void GameScene::moveGarbageCan(Vec2 mouseLocation)
 {
 	if (catapultPulling) //Catapult is beeing pulled on
 	{
@@ -184,34 +184,34 @@ void GameScene::moveTarget(Vec2 mouseLocation)
 		if (mouseLocation.distance(catapultLocation) < catapultPullRadius)
 		{
 			//Mouse is within pull radius
-			target->setPosition(mouseLocation);
+			garbageCanSprite->setPosition(mouseLocation);
 		}
 		else
 		{
 			//Mouse is outside the radius
 			//Find where line from mouse to catapultlocation intersects with a cirlce with radius of catapultPullRadius
-			//Get absolute size of targets relative vector edges
+			//Get absolute size of Garbage cans relative vector edges
 			Vec2 relativeMouseLocation = mouseLocation - catapultLocation;
 			float sinalpha = abs(relativeMouseLocation.y) / abs(relativeMouseLocation.getLength());
-			float targetX, targetY;
-			targetY = sinalpha * catapultPullRadius;
-			targetX = sqrt(catapultPullRadius*catapultPullRadius - targetY*targetY);
+			float GarbageCanX, GarbageCanY;
+			GarbageCanY = sinalpha * catapultPullRadius;
+			GarbageCanX = sqrt(catapultPullRadius*catapultPullRadius - GarbageCanY*GarbageCanY);
 
 			//transform absolute location in real location
-			Vec2 newTargetRelativeLocation(targetX, targetY);
+			Vec2 newGarbageCanRelativeLocation(GarbageCanX, GarbageCanY);
 			if (relativeMouseLocation.x < 0)
 			{
-				newTargetRelativeLocation.x *= -1;
+				newGarbageCanRelativeLocation.x *= -1;
 			}
 			if (relativeMouseLocation.y < 0)
 			{
-				newTargetRelativeLocation.y *= -1;
+				newGarbageCanRelativeLocation.y *= -1;
 			}
 
 			//apply the new location5
-			target->setPosition(catapultLocation + newTargetRelativeLocation);
+			garbageCanSprite->setPosition(catapultLocation + newGarbageCanRelativeLocation);
 		}
-		Vec2 relativeLocation = target->getPosition() - catapultLocation;
-		target->setRotation(-1 * CC_RADIANS_TO_DEGREES(relativeLocation.getAngle()) - 90);
+		Vec2 relativeLocation = garbageCanSprite->getPosition() - catapultLocation;
+		garbageCanSprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(relativeLocation.getAngle()) - 90);
 	}
 }

@@ -26,7 +26,7 @@ private:
 	void mouseEventHandlerOnMove(cocos2d::Event * e);
 
 	//Helper functions
-	void moveTarget(cocos2d::Vec2 mouseLocation);
+	void moveGarbageCan(cocos2d::Vec2 mouseLocation);
 
 	//Variables
 	bool catapultPulling = false;
@@ -36,6 +36,5 @@ private:
 	std::vector<cocos2d::Sprite *> groundSprites;
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;
-	cocos2d::Sprite * target;
 	cocos2d::Vec2 catapultLocation;
 };
