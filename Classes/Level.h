@@ -23,7 +23,7 @@ public:
 	cocos2d::Node * getWorld() { return world; }
 
 	//Add or get scoreboxes
-	void addScroebox(ScoreBox box) { scoreBoxes.push_back(box); }
+	void addScoreBox(ScoreBox box) { scoreBoxes.push_back(box); }
 	std::vector<ScoreBox> getScoreBoxes() { return scoreBoxes; }
 private:
 	std::vector<ScoreBox> scoreBoxes;
