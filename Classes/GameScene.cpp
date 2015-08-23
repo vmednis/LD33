@@ -152,6 +152,16 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		node->setPosition(target->getPosition());
 		world->addChild(node, RenderOrder::Garbage);
 
+		//Start moving target back to it's initial position
+		auto moveAction = MoveTo::create(1.0, catapultLocation);
+		auto moveActionEased = EaseElasticOut::create(moveAction->clone());
+		auto rotateAction = RotateTo::create(1.5, 0);
+		auto rotateActionEased = EaseBackInOut::create(rotateAction->clone());
+		CCLOG("test");
+		auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
+		CCLOG("test");
+		target->runAction(actionSpawn);
+
 		CCLOG("Shooting!");
 	}
 }
