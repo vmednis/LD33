@@ -32,15 +32,6 @@ bool GameScene::init()
 	house->setAnchorPoint({ 0.0, 0.0 });
 	house->setPosition(Vec2(1080, 120));
 	addChild(house);
-	
-	//Test garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 20.0f, 20.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
-	garbagePhysicsBody->setDynamic(true);
-	garbagePhysicsBody->setVelocity({ 200, 200 });
-	auto node = Node::create();
-	node->setPhysicsBody(garbagePhysicsBody);
-	node->setPosition({ 225 , 330 });
-	addChild(node);
 
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
@@ -138,6 +129,15 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		Vec2 shootingVelocity = (target->getPosition() - catapultLocation) * -1;
 		shootingVelocity.x = shootingVelocity.x / catapultPullRadius * catapultShootVelocityMultiplier;
 		shootingVelocity.y = shootingVelocity.y / catapultPullRadius * catapultShootVelocityMultiplier;
+
+		//Test garbage
+		auto garbagePhysicsBody = PhysicsBody::createBox({ 20.0f, 20.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+		garbagePhysicsBody->setDynamic(true);
+		garbagePhysicsBody->setVelocity(shootingVelocity);
+		auto node = Node::create();
+		node->setPhysicsBody(garbagePhysicsBody);
+		node->setPosition(target->getPosition());
+		addChild(node);
 
 		CCLOG("Shooting!");
 	}
