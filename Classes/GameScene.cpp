@@ -19,26 +19,14 @@ bool GameScene::init()
 	//Enable physics debug
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
-	//Ground
-	for (unsigned int i = 0; i < 20; i++)
-	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(1.0, 0.0, 0.9), {0, -60});
-		groundPhysicsBody->setDynamic(false);
-		Sprite * node;
-		if (i == 0)
-		{
-			node = Sprite::create("uptown/sprites/street.png");
-		}
-		else
-		{
-			node = Sprite::create("uptown/sprites/grass.png");
-		}
-		node->setPhysicsBody(groundPhysicsBody);
-		node->setAnchorPoint({ 0.0, 0.0 });
-		node->setPosition(Vec2(i * 540, 0));
-		addChild(node);
-		groundSprites.push_back(node);
-	}
+	//Truck
+	auto truckPhysicsBody = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial(1.0, 0.0, 0.9));
+	truckPhysicsBody->setDynamic(false);
+	truckSprite = Sprite::create("uptown/sprites/truck.png");
+	truckSprite->setAnchorPoint({ 0.0, 0.0 });
+	truckSprite->setPhysicsBody(truckPhysicsBody);
+	truckSprite->setPosition(240, 120);
+	addChild(truckSprite);
 
 	//Test house
 	auto housePhysicsBody = PhysicsBody::createBox({ 240, 240 }, PhysicsMaterial(1.0, 0.0, 0.9), {120, 120});
@@ -58,6 +46,27 @@ bool GameScene::init()
 	node->setPhysicsBody(garbagePhysicsBody);
 	node->setPosition({ 225 , 330 });
 	addChild(node);
+
+	//Ground
+	for (unsigned int i = 0; i < 20; i++)
+	{
+		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(1.0, 0.0, 0.9), { 0, -60 });
+		groundPhysicsBody->setDynamic(false);
+		Sprite * node;
+		if (i == 0)
+		{
+			node = Sprite::create("uptown/sprites/street.png");
+		}
+		else
+		{
+			node = Sprite::create("uptown/sprites/grass.png");
+		}
+		node->setPhysicsBody(groundPhysicsBody);
+		node->setAnchorPoint({ 0.0, 0.0 });
+		node->setPosition(Vec2(i * 540, 0));
+		addChild(node);
+		groundSprites.push_back(node);
+	}
 
 	//Set catapult location
 	catapultLocation.x = 225;
