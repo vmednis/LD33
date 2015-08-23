@@ -22,12 +22,14 @@ bool GameScene::init()
 	addChild(backgroundSprite, RenderOrder::Background);
 
 	//Truck
-	auto truckPhysicsBody = PhysicsBody::createBox({ 156.0f, 228.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
+	//auto truckPhysicsBody = PhysicsBody::createBox({ 276.0f, 180.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
+	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 96.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, -18 });
+	truckPhysicsBody->addShape(PhysicsShapeBox::create({ 276.0f, 24.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0, -78 }));
 	truckPhysicsBody->setDynamic(false);
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
 	truckSprite->setPhysicsBody(truckPhysicsBody);
-	truckSprite->setPosition(240, 120);
+	truckSprite->setPosition(204, 120);
 	addChild(truckSprite, RenderOrder::Truck);
 
 	//Test house
@@ -62,8 +64,8 @@ bool GameScene::init()
 	}
 
 	//Set catapult location
-	catapultLocation.x = 225;
-	catapultLocation.y = 330;
+	catapultLocation.x = 168;
+	catapultLocation.y = 231;
 
 	//Create target sprite
 	target = Sprite::create("placeholder.png");
