@@ -98,10 +98,14 @@ bool GameScene::init()
 
 void GameScene::update(float delta)
 {
-	cameraFollow();
+	if (!catapultReady)
+	{
+		cameraFollow();
+	}
+	cameraUpdateMove(delta);
+	cameraForceBounds();
 }
 
-//Must be called every update
 void GameScene::cameraFollow()
 {
 	//Follow furthest piece of garbage with the camera
@@ -126,17 +130,41 @@ void GameScene::cameraFollow()
 
 void GameScene::cameraReset()
 {
-	auto moveAction = MoveTo::create(3.0, { 0.0, 0.0 });
+	auto moveAction = MoveTo::create(cameraResetTime, { 0.0, 0.0 });
 	auto moveActionEased = EaseOut::create(moveAction->clone(), 1.0);
 	world->runAction(moveAction);
+}
+
+void GameScene::cameraUpdateMove(float delta)
+{
+	if (cameraMoveRight)
+	{
+		world->setPosition(world->getPosition() - Vec2(cameraMoveSpeedX * delta, 0));
+	}
+	if (cameraMoveLeft)
+	{
+		world->setPosition(world->getPosition() + Vec2(cameraMoveSpeedX * delta, 0));
+	}
+}
+
+void GameScene::cameraForceBounds()
+{
+
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_SPACE:
-		CCLOG("Spacebar was pressed");
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		cameraMoveRight = true;
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		cameraMoveLeft = true;
+		break;
+	case EventKeyboard::KeyCode::KEY_F5:
+		cameraReset();
+		break;
 	}
 }
 
@@ -144,8 +172,12 @@ void GameScene::keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, E
 {
 	switch (keycode)
 	{
-	case EventKeyboard::KeyCode::KEY_SPACE:
-		CCLOG("Spacebar was released");
+	case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
+		cameraMoveRight = false;
+		break;
+	case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
+		cameraMoveLeft = false;
+		break;
 	}
 }
 
@@ -174,7 +206,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		shootingVelocity.y = pow(sqrt(shootingVelocity.y / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
 
 		//Test garbage
-		auto garbagePhysicsBody = PhysicsBody::createBox({ 20.0f, 20.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+		auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 		garbagePhysicsBody->setDynamic(true);
 		garbagePhysicsBody->setVelocity(shootingVelocity);
 		auto node = Node::create();
@@ -184,16 +216,12 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		garbageNodes.push_back(node);
 
 		//Start moving garbage can back to it's initial position
-		auto moveAction = MoveTo::create(1.0, catapultLocation);
+		auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
 		auto moveActionEased = EaseElasticOut::create(moveAction->clone());
-		auto rotateAction = RotateTo::create(1.5, 0);
+		auto rotateAction = RotateTo::create(garbageCanResetRotationTime, 0);
 		auto rotateActionEased = EaseBackInOut::create(rotateAction->clone());
-		CCLOG("test");
 		auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
-		CCLOG("test");
 		garbageCanSprite->runAction(actionSpawn);
-
-		CCLOG("Shooting!");
 	}
 }
 
@@ -209,6 +237,7 @@ void GameScene::mouseEventHandlerOnMove(Event * e)
 
 void GameScene::moveGarbageCan(Vec2 mouseLocation)
 {
+	mouseLocation = world->convertToNodeSpace(mouseLocation);
 	if (catapultPulling) //Catapult is beeing pulled on
 	{
 		//if (mouseLocation.x > 204) mouseLocation.x = 204;

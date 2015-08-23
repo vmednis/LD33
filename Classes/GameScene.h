@@ -18,9 +18,13 @@ private:
 	//Node for use with camera
 	cocos2d::Node * world;
 
-	//Reset the camera
-	void cameraFollow();
-	void cameraReset();
+	//Camera control
+	void cameraFollow();//Must be called every update
+	void cameraReset();//Slides camera back to the begining of the world
+	void cameraUpdateMove(float delta);
+	void cameraForceBounds();//Don't let the camera exit world
+	bool cameraMoveRight = false;
+	bool cameraMoveLeft = false;
 
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);

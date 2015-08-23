@@ -15,6 +15,12 @@ static float catapultShootVelocityMultiplier = 600; //The velocity projectile wi
 
 //Camera
 static float camearaPaddingX = 300;
+static float cameraMoveSpeedX = 250; //points/second
+static float cameraResetTime = 3.0; //Time it takes camera to reset position
+
+//Action animations
+static float garbageCanResetPositionTime = 1.0;
+static float garbageCanResetRotationTime = 1.5;
 
 //Rendering order of the items in scenegraph
 enum RenderOrder
