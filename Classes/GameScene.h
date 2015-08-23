@@ -18,6 +18,10 @@ private:
 	//Node for use with camera
 	cocos2d::Node * world;
 
+	//Reset the camera
+	void cameraFollow();
+	void cameraReset();
+
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
 	void keyboardEventHandlerOnReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
@@ -34,6 +38,7 @@ private:
 
 	//Objects in game world
 	std::vector<cocos2d::Sprite *> groundSprites;
+	std::vector<cocos2d::Node *> garbageNodes;
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;
 	cocos2d::Vec2 catapultLocation;

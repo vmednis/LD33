@@ -13,6 +13,9 @@ static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
 static float catapultPullRadius = 150; //Area where catapult can be pulled
 static float catapultShootVelocityMultiplier = 600; //The velocity projectile will have if catapult is pulled all the way back
 
+//Camera
+static float camearaPaddingX = 300;
+
 //Rendering order of the items in scenegraph
 enum RenderOrder
 {

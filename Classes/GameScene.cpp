@@ -98,7 +98,37 @@ bool GameScene::init()
 
 void GameScene::update(float delta)
 {
+	cameraFollow();
+}
 
+//Must be called every update
+void GameScene::cameraFollow()
+{
+	//Follow furthest piece of garbage with the camera
+	float furthestX = 0.0;
+	Node * furthestGarbage = NULL;
+	for (Node * garbage : garbageNodes)
+	{
+		if (garbage->getPosition().x > furthestX)
+		{
+			furthestX = garbage->getPosition().x;
+			furthestGarbage = garbage;
+		}
+	}
+	if (furthestGarbage != NULL)
+	{
+		if (world->convertToWorldSpace(furthestGarbage->getPosition()).x > designResolutionSize.width - camearaPaddingX)
+		{
+			world->setPosition({ -1 * (furthestGarbage->getPosition().x - (designResolutionSize.width - camearaPaddingX)) , 0 });
+		}
+	}
+}
+
+void GameScene::cameraReset()
+{
+	auto moveAction = MoveTo::create(3.0, { 0.0, 0.0 });
+	auto moveActionEased = EaseOut::create(moveAction->clone(), 1.0);
+	world->runAction(moveAction);
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
@@ -151,6 +181,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		node->setPhysicsBody(garbagePhysicsBody);
 		node->setPosition(garbageCanSprite->getPosition());
 		world->addChild(node, RenderOrder::Garbage);
+		garbageNodes.push_back(node);
 
 		//Start moving garbage can back to it's initial position
 		auto moveAction = MoveTo::create(1.0, catapultLocation);
@@ -180,6 +211,9 @@ void GameScene::moveGarbageCan(Vec2 mouseLocation)
 {
 	if (catapultPulling) //Catapult is beeing pulled on
 	{
+		//if (mouseLocation.x > 204) mouseLocation.x = 204;
+		//if (mouseLocation.y > 300) mouseLocation.y = 300;
+		//if (mouseLocation.x == 204 && mouseLocation.y == 300) mouseLocation.x = 203;
 		//Apply changes in location
 		if (mouseLocation.distance(catapultLocation) < catapultPullRadius)
 		{
