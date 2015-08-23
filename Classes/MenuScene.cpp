@@ -47,36 +47,40 @@ void MenuScene::menuStart(Ref* pSender)
 
 void MenuScene::menuResize(Ref* pSender)
 {
-	auto glview = Director::getInstance()->getOpenGLView();
-	if (currentResolutionSizeID == 0)
+	auto director = Director::getInstance();
+	auto glview = director->getOpenGLView();
+	auto scene = MenuScene::create();
+	if (currentResolutionSizeID == 4) currentResolutionSizeID = 0; else currentResolutionSizeID++;
+
+	if (currentResolutionSizeID == 1)
 	{
 		glview->setFrameSize(smallResolutionSize.width, smallResolutionSize.height);
-		menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
-		menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
-	}
-	else if (currentResolutionSizeID == 1)
-	{
-		glview->setFrameSize(mediumResolutionSize.width, mediumResolutionSize.height);
-		menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
-		menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
 	}
 	else if (currentResolutionSizeID == 2)
 	{
-		glview->setFrameSize(almostLargeResolutionSize.width, almostLargeResolutionSize.height);
-		menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
-		menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
+		glview->setFrameSize(mediumResolutionSize.width, mediumResolutionSize.height);
 	}
 	else if (currentResolutionSizeID == 3)
 	{
-		glview->setFrameSize(largeResolutionSize.width, largeResolutionSize.height);
-		menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
-		menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
+		glview->setFrameSize(almostLargeResolutionSize.width, almostLargeResolutionSize.height);
 	}
 	else if (currentResolutionSizeID == 4)
 	{
-		glview->setFrameSize(almostSmallResolutionSize.width, almostSmallResolutionSize.height);
-		menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
-		menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
+		glview->setFrameSize(largeResolutionSize.width, largeResolutionSize.height);
 	}
-	if (currentResolutionSizeID == 4) currentResolutionSizeID = 0; else currentResolutionSizeID++;
+	else if (currentResolutionSizeID == 0)
+	{
+		glview->setFrameSize(almostSmallResolutionSize.width, almostSmallResolutionSize.height);
+	}
+
+	scene->setCurrentResolutionSizeID(currentResolutionSizeID);
+	director->replaceScene(scene);
+	glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+}
+
+void MenuScene::setCurrentResolutionSizeID(char newID)
+{
+	currentResolutionSizeID = newID;
+	//menuResizeItem->setNormalImage(Sprite::create("menu_start.png"));
+	//menuResizeItem->setSelectedImage(Sprite::create("menu_start_pressed.png"));
 }
