@@ -13,7 +13,16 @@ public:
 
 	//Generates create function
 	CREATE_FUNC(GameScene);
+
 private:
+	//Event handlers
+	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
+	void keyboardEventHandlerOnReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
+	void mouseEventHandlerOnDown(cocos2d::Event * e);
+	void mouseEventHandlerOnUp(cocos2d::Event * e);
+	void mouseEventHandlerOnMove(cocos2d::Event * e);
+
+	//Objects in game world
 	std::vector<cocos2d::Sprite *> groundSprites;
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;

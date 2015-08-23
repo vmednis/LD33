@@ -3,12 +3,6 @@
 
 USING_NS_CC;
 
-void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e);
-void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e);
-void mouseEventHandlerOnDown(Event * e);
-void mouseEventHandlerOnUp(Event * e);
-void mouseEventHandlerOnMove(Event * e);
-
 bool GameScene::init()
 {
 	//Init super class
@@ -81,14 +75,14 @@ bool GameScene::init()
 	//Create event handlers
 	//Keyboard
 	auto keyboardEventListener = EventListenerKeyboard::create();
-	keyboardEventListener->onKeyPressed = keyboardEventHandlerOnPressed;
-	keyboardEventListener->onKeyReleased = keyboardEventHandlerOnReleased;
+	keyboardEventListener->onKeyPressed = CC_CALLBACK_2(GameScene::keyboardEventHandlerOnPressed, this);
+	keyboardEventListener->onKeyReleased = CC_CALLBACK_2(GameScene::keyboardEventHandlerOnReleased, this);
 	_eventDispatcher->addEventListenerWithFixedPriority(keyboardEventListener, 1);
 	//Mouse
 	auto mouseEventListener = EventListenerMouse::create();
-	mouseEventListener->onMouseDown = mouseEventHandlerOnDown;
-	mouseEventListener->onMouseUp = mouseEventHandlerOnUp;
-	mouseEventListener->onMouseMove = mouseEventHandlerOnMove;
+	mouseEventListener->onMouseDown = CC_CALLBACK_1(GameScene::mouseEventHandlerOnDown, this);
+	mouseEventListener->onMouseUp = CC_CALLBACK_1(GameScene::mouseEventHandlerOnUp, this);
+	mouseEventListener->onMouseMove = CC_CALLBACK_1(GameScene::mouseEventHandlerOnMove, this);
 	_eventDispatcher->addEventListenerWithFixedPriority(mouseEventListener, 1);
 
 	//Enable update function
@@ -103,7 +97,7 @@ void GameScene::update(float delta)
 
 }
 
-void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
+void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
 {
 	switch (keycode)
 	{
@@ -112,7 +106,7 @@ void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
 	}
 }
 
-void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
+void GameScene::keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
 {
 	switch (keycode)
 	{
@@ -121,17 +115,17 @@ void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
 	}
 }
 
-void mouseEventHandlerOnDown(Event * e)
+void GameScene::mouseEventHandlerOnDown(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 }
 
-void mouseEventHandlerOnUp(Event * e)
+void GameScene::mouseEventHandlerOnUp(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 }
 
-void mouseEventHandlerOnMove(Event * e)
+void GameScene::mouseEventHandlerOnMove(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 }
