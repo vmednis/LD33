@@ -15,7 +15,7 @@ bool GameScene::init()
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
 	//Truck
-	auto truckPhysicsBody = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial(1.0, 0.0, 0.9));
+	auto truckPhysicsBody = PhysicsBody::createBox({ 156.0f, 228.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
 	truckPhysicsBody->setDynamic(false);
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
@@ -24,7 +24,7 @@ bool GameScene::init()
 	addChild(truckSprite);
 
 	//Test house
-	auto housePhysicsBody = PhysicsBody::createBox({ 240, 240 }, PhysicsMaterial(1.0, 0.0, 0.9), {120, 120});
+	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), {120.0f, 120.0f});
 	housePhysicsBody->setDynamic(false);
 	Node * house;
 	house = Node::create();
@@ -34,7 +34,7 @@ bool GameScene::init()
 	addChild(house);
 	
 	//Test garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.3, 0.7));
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 20.0f, 20.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 	garbagePhysicsBody->setDynamic(true);
 	garbagePhysicsBody->setVelocity({ 200, 200 });
 	auto node = Node::create();
@@ -45,7 +45,7 @@ bool GameScene::init()
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(1.0, 0.0, 0.9), { 0, -60 });
+		auto groundPhysicsBody = PhysicsBody::createBox({ 540.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
 		groundPhysicsBody->setDynamic(false);
 		Sprite * node;
 		if (i == 0)
@@ -134,6 +134,11 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 	{
 		//Shoot
 		catapultPulling = false;
+		//Calculate projectile velocity
+		Vec2 shootingVelocity = (target->getPosition() - catapultLocation) * -1;
+		shootingVelocity.x = shootingVelocity.x / catapultPullRadius * catapultShootVelocityMultiplier;
+		shootingVelocity.y = shootingVelocity.y / catapultPullRadius * catapultShootVelocityMultiplier;
+
 		CCLOG("Shooting!");
 	}
 }
