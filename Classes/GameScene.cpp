@@ -36,9 +36,19 @@ bool GameScene::init()
 		addChild(node);
 		groundSprites.push_back(node);
 	}
+
+	//Test house
+	auto housePhysicsBody = PhysicsBody::createBox({ 240, 240 }, PhysicsMaterial(1.0, 0.0, 0.9), {120, 120});
+	housePhysicsBody->setDynamic(false);
+	Node * house;
+	house = Node::create();
+	house->setPhysicsBody(housePhysicsBody);
+	house->setAnchorPoint({ 0.0, 0.0 });
+	house->setPosition(Vec2(1080, 120));
+	addChild(house);
 	
 	//Test garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.2, 0.7));
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.3, 0.7));
 	garbagePhysicsBody->setDynamic(true);
 	garbagePhysicsBody->setVelocity({ 200, 200 });
 	auto node = Node::create();
