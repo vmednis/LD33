@@ -14,6 +14,14 @@ bool GameScene::init()
 	//Enable physics debug
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 
+	getPhysicsWorld()->setGravity(Vec2(0, -150));
+	
+	//Background
+	auto backgroundSprite = Sprite::create("uptown/sprites/background.png");
+	backgroundSprite->setAnchorPoint({ 0.0, 0.0 });
+	backgroundSprite->setPosition(0, 0);
+	addChild(backgroundSprite);
+
 	//Truck
 	auto truckPhysicsBody = PhysicsBody::createBox({ 156.0f, 228.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
 	truckPhysicsBody->setDynamic(false);

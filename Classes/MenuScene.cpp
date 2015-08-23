@@ -28,7 +28,7 @@ bool MenuScene::init()
 	menuItems.pushBack(menuStartItem);
 	menuResizeItem = MenuItemImage::create("menu_resize_almost_small.png", "menu_resize_almost_small_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
 	menuResizeItem->setAnchorPoint({ 0.0, 0.0 });
-	menuResizeItem->setPosition(180, 360);
+	menuResizeItem->setPosition(180, 504); //180, 360
 	menuItems.pushBack(menuResizeItem);
 	auto menu = Menu::createWithArray(menuItems);
 	menu->setAnchorPoint({ 0.0, 0.0 });
