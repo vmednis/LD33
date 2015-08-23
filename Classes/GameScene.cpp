@@ -4,6 +4,7 @@ USING_NS_CC;
 
 void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e);
 void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e);
+void mouseEventHandlerOnMove(Event * e);
 
 bool GameScene::init()
 {
@@ -57,10 +58,16 @@ bool GameScene::init()
 	addChild(node);
 
 	//Create event handlers
-	auto eventListener = EventListenerKeyboard::create();
-	eventListener->onKeyPressed = keyboardEventHandlerOnPressed;
-	eventListener->onKeyReleased = keyboardEventHandlerOnReleased;
-	_eventDispatcher->addEventListenerWithFixedPriority(eventListener, 1);
+
+	//Keyboard
+	auto keyboardEventListener = EventListenerKeyboard::create();
+	keyboardEventListener->onKeyPressed = keyboardEventHandlerOnPressed;
+	keyboardEventListener->onKeyReleased = keyboardEventHandlerOnReleased;
+	_eventDispatcher->addEventListenerWithFixedPriority(keyboardEventListener, 1);
+	//Mouse
+	auto mouseEventListener = EventListenerMouse::create();
+	mouseEventListener->onMouseMove = mouseEventHandlerOnMove;
+	_eventDispatcher->addEventListenerWithFixedPriority(mouseEventListener, 1);
 
 	//Enable update function
 	scheduleUpdate();
@@ -90,4 +97,9 @@ void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		CCLOG("Spacebar was released");
 	}
+}
+
+void mouseEventHandlerOnMove(Event * e)
+{
+	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 }
