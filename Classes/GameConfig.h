@@ -26,9 +26,11 @@ static float garbageCanResetRotationTime = 1.5;
 enum RenderOrder
 {
 	Background,
+	Entity,
 	Truck,
 	Garbage,
 	Ground,
 	GarbageCan,
+	HUD,
 	Debug
 };
