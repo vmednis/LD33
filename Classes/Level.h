@@ -11,9 +11,6 @@ public:
 	//Loads level from a file into levelbuilder class
 	void loadLevel(const std::string filename);
 	
-	//Build the level, adds everything as children to world
-	void buildLevel();
-	
 	//Clears the level
 	void clearLevel();
 
