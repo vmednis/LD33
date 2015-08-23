@@ -22,6 +22,13 @@ private:
 	void mouseEventHandlerOnUp(cocos2d::Event * e);
 	void mouseEventHandlerOnMove(cocos2d::Event * e);
 
+	//Helper functions
+	void moveTarget(cocos2d::Vec2 mouseLocation);
+
+	//Variables
+	bool catapultPulling = false;
+	bool catapultReady = true;
+
 	//Objects in game world
 	std::vector<cocos2d::Sprite *> groundSprites;
 	cocos2d::Sprite * truckSprite;

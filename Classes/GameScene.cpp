@@ -118,14 +118,70 @@ void GameScene::keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, E
 void GameScene::mouseEventHandlerOnDown(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
+	if (catapultReady)
+	{
+		//Start moving the target
+		catapultPulling = true;
+		catapultReady = false;
+		moveTarget({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
+	}
 }
 
 void GameScene::mouseEventHandlerOnUp(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
+	if (catapultPulling)
+	{
+		//Shoot
+		catapultPulling = false;
+		CCLOG("Shooting!");
+	}
 }
 
 void GameScene::mouseEventHandlerOnMove(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
+	if (catapultPulling)
+	{
+		//Move target to the new positions
+		moveTarget({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
+	}
+}
+
+void GameScene::moveTarget(Vec2 mouseLocation)
+{
+	if (catapultPulling) //Catapult is beeing pulled on
+	{
+		//Apply changes in location
+		if (mouseLocation.distance(catapultLocation) < catapultPullRadius)
+		{
+			//Mouse is within pull radius
+			target->setPosition(mouseLocation);
+		}
+		else
+		{
+			//Mouse is outside the radius
+			//Find where line from mouse to catapultlocation intersects with a cirlce with radius of catapultPullRadius
+			//Get absolute size of targets relative vector edges
+			Vec2 relativeMouseLocation = mouseLocation - catapultLocation;
+			float sinalpha = abs(relativeMouseLocation.y) / abs(relativeMouseLocation.getLength());
+			float targetX, targetY;
+			targetY = sinalpha * catapultPullRadius;
+			targetX = sqrt(catapultPullRadius*catapultPullRadius - targetY*targetY);
+
+			//transform absolute location in real location
+			Vec2 newTargetRelativeLocation(targetX, targetY);
+			if (relativeMouseLocation.x < 0)
+			{
+				newTargetRelativeLocation.x *= -1;
+			}
+			if (relativeMouseLocation.y < 0)
+			{
+				newTargetRelativeLocation.y *= -1;
+			}
+
+			//apply the new location5
+			target->setPosition(catapultLocation + newTargetRelativeLocation);
+		}
+	}
 }
