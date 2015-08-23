@@ -1,15 +1,20 @@
 #pragma once
 #include "cocos2d.h"
 
-class LevelBuilder
+class Level
 {
 public:
-	//Loads level from a file
+	Level(cocos2d::Node * world, cocos2d::Vec2 size);
+
+	//Loads level from a file into levelbuilder class
 	void loadLevel(const std::string filename);
 	
 	//Build the level, adds everything as children to world
 	void buildLevel();
 	
+	//Clears the level
+	void clearLevel();
+
 	//Set or get size of the level
 	void setSize(cocos2d::Vec2 size) { this->size = size; }
 	cocos2d::Vec2 getSize() { return size; }
