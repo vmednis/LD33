@@ -161,7 +161,23 @@ void GameScene::cameraUpdateMove(float delta)
 
 void GameScene::cameraForceBounds()
 {
-
+	//too far to the left
+	if (world->getPosition().x > 0)
+	{
+		world->setPosition({0, world->getPosition().y});
+	}
+	//too far to the right
+	if ((world->getPosition().x - designResolutionSize.width)*-1.0 > levelController->getSize())
+	{
+		if (levelController->getSize() > designResolutionSize.width)
+		{
+			world->setPosition({ (levelController->getSize() - designResolutionSize.width) * -1, world->getPosition().y });
+		}
+		else//The level is smaller than the screen itself
+		{
+			world->setPosition({ 0, world->getPosition().y });
+		}
+	}
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
