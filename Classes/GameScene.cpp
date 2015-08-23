@@ -111,7 +111,7 @@ void GameScene::cameraFollow()
 	//Follow furthest piece of garbage with the camera
 	float furthestX = 0.0;
 	Node * furthestGarbage = NULL;
-	for (Node * garbage : garbageNodes)
+	for (Node * garbage : garbageSprites)
 	{
 		if (garbage->getPosition().x > furthestX)
 		{
@@ -209,11 +209,12 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 		garbagePhysicsBody->setDynamic(true);
 		garbagePhysicsBody->setVelocity(shootingVelocity);
-		auto node = Node::create();
-		node->setPhysicsBody(garbagePhysicsBody);
-		node->setPosition(garbageCanSprite->getPosition());
-		world->addChild(node, RenderOrder::Garbage);
-		garbageNodes.push_back(node);
+		auto sprite = Sprite::create("uptown/sprites/garbage.png");
+		sprite->setAnchorPoint({ 0.5, 0.5 });
+		sprite->setPhysicsBody(garbagePhysicsBody);
+		sprite->setPosition(garbageCanSprite->getPosition());
+		world->addChild(sprite, RenderOrder::Garbage);
+		garbageSprites.push_back(sprite);
 
 		//Start moving garbage can back to it's initial position
 		auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
