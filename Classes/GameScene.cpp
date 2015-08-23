@@ -136,8 +136,8 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		catapultPulling = false;
 		//Calculate projectile velocity
 		Vec2 shootingVelocity = (target->getPosition() - catapultLocation) * -1;
-		shootingVelocity.x = shootingVelocity.x / catapultPullRadius * catapultShootVelocityMultiplier;
-		shootingVelocity.y = shootingVelocity.y / catapultPullRadius * catapultShootVelocityMultiplier;
+		shootingVelocity.x = pow(sqrt(shootingVelocity.x / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+		shootingVelocity.y = pow(sqrt(shootingVelocity.y / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
 
 		//Test garbage
 		auto garbagePhysicsBody = PhysicsBody::createBox({ 20.0f, 20.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
