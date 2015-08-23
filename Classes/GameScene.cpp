@@ -19,7 +19,7 @@ bool GameScene::init()
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(), {0, -60});
+		auto groundPhysicsBody = PhysicsBody::createBox({ 540, 120 }, PhysicsMaterial(1.0, 0.0, 0.9), {0, -60});
 		groundPhysicsBody->setDynamic(false);
 		Sprite * node;
 		if (i == 0)
@@ -38,7 +38,7 @@ bool GameScene::init()
 	}
 	
 	//Test garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.2, 50.0));
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.2, 0.7));
 	garbagePhysicsBody->setDynamic(true);
 	garbagePhysicsBody->setVelocity({ 200, 200 });
 	auto node = Node::create();
