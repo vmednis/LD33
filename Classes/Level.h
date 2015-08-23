@@ -6,7 +6,7 @@
 class Level
 {
 public:
-	Level(cocos2d::Node * world, cocos2d::Vec2 size);
+	Level(cocos2d::Node * world, float size);
 
 	//Loads level from a file into levelbuilder class
 	void loadLevel(const std::string filename);
@@ -15,8 +15,8 @@ public:
 	void clearLevel();
 
 	//Set or get size of the level
-	void setSize(cocos2d::Vec2 size) { this->size = size; }
-	cocos2d::Vec2 getSize() { return size; }
+	void setSize(float size) { this->size = size; }
+	float getSize() { return size; }
 
 	//Set or get the world
 	void setWorld(cocos2d::Node * world) { this->world = world; }
@@ -26,7 +26,15 @@ public:
 	void addScoreBox(ScoreBox box) { scoreBoxes.push_back(box); }
 	std::vector<ScoreBox> getScoreBoxes() { return scoreBoxes; }
 private:
+	std::vector<cocos2d::Node *> loadedObjectNodes;
 	std::vector<ScoreBox> scoreBoxes;
-	cocos2d::Vec2 size;
+	float size;
 	cocos2d::Node * world;
+};
+
+struct LoadableObject
+{
+	std::string name;
+	float x;
+	float y;
 };

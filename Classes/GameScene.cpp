@@ -16,13 +16,14 @@ bool GameScene::init()
 	addChild(world);
 
 	//Load level
-	levelController = new Level(world, { 0.0, 0.0 });
+	levelController = new Level(world, 1000);
+	levelController->loadLevel("test.txt");
 
 	//ScoreBox debug
 	debugDrawNode = DrawNode::create();
 	for (ScoreBox box : levelController->getScoreBoxes())
 	{
-		debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12, 0.56, 1.0, 0.3));
+		debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12f, 0.56f, 1.0f, 0.3f));
 	}
 	world->addChild(debugDrawNode, RenderOrder::Debug);
 
