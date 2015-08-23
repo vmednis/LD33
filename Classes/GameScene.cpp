@@ -59,8 +59,16 @@ bool GameScene::init()
 	node->setPosition({ 225 , 330 });
 	addChild(node);
 
-	//Create event handlers
+	//Set catapult location
+	catapultLocation.x = 225;
+	catapultLocation.y = 330;
 
+	//Create target sprite
+	target = Sprite::create("placeholder.png");
+	target->setPosition(catapultLocation);
+	addChild(target);
+
+	//Create event handlers
 	//Keyboard
 	auto keyboardEventListener = EventListenerKeyboard::create();
 	keyboardEventListener->onKeyPressed = keyboardEventHandlerOnPressed;
