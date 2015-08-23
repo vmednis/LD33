@@ -4,6 +4,8 @@ USING_NS_CC;
 
 void keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e);
 void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e);
+void mouseEventHandlerOnDown(Event * e);
+void mouseEventHandlerOnUp(Event * e);
 void mouseEventHandlerOnMove(Event * e);
 
 bool GameScene::init()
@@ -66,6 +68,8 @@ bool GameScene::init()
 	_eventDispatcher->addEventListenerWithFixedPriority(keyboardEventListener, 1);
 	//Mouse
 	auto mouseEventListener = EventListenerMouse::create();
+	mouseEventListener->onMouseDown = mouseEventHandlerOnDown;
+	mouseEventListener->onMouseUp = mouseEventHandlerOnUp;
 	mouseEventListener->onMouseMove = mouseEventHandlerOnMove;
 	_eventDispatcher->addEventListenerWithFixedPriority(mouseEventListener, 1);
 
@@ -97,6 +101,16 @@ void keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, Event * e)
 	case EventKeyboard::KeyCode::KEY_SPACE:
 		CCLOG("Spacebar was released");
 	}
+}
+
+void mouseEventHandlerOnDown(Event * e)
+{
+	auto mouseEvent = dynamic_cast<EventMouse *>(e);
+}
+
+void mouseEventHandlerOnUp(Event * e)
+{
+	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 }
 
 void mouseEventHandlerOnMove(Event * e)
