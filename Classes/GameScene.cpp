@@ -11,16 +11,15 @@ bool GameScene::init()
 		return false;
 	}
 
-	//Enable physics debug
+	//Set physics engine world settings
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
-
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 	
 	//Background
 	auto backgroundSprite = Sprite::create("uptown/sprites/background.png");
 	backgroundSprite->setAnchorPoint({ 0.0, 0.0 });
 	backgroundSprite->setPosition(0, 0);
-	addChild(backgroundSprite);
+	addChild(backgroundSprite, RenderOrder::Background);
 
 	//Truck
 	auto truckPhysicsBody = PhysicsBody::createBox({ 156.0f, 228.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
@@ -29,7 +28,7 @@ bool GameScene::init()
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
 	truckSprite->setPhysicsBody(truckPhysicsBody);
 	truckSprite->setPosition(240, 120);
-	addChild(truckSprite);
+	addChild(truckSprite, RenderOrder::Truck);
 
 	//Test house
 	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), {120.0f, 120.0f});
@@ -58,7 +57,7 @@ bool GameScene::init()
 		node->setPhysicsBody(groundPhysicsBody);
 		node->setAnchorPoint({ 0.0, 0.0 });
 		node->setPosition(Vec2(i * 540, 0));
-		addChild(node);
+		addChild(node, RenderOrder::Ground);
 		groundSprites.push_back(node);
 	}
 
@@ -69,7 +68,7 @@ bool GameScene::init()
 	//Create target sprite
 	target = Sprite::create("placeholder.png");
 	target->setPosition(catapultLocation);
-	addChild(target);
+	addChild(target, RenderOrder::Debug);
 
 	//Create event handlers
 	//Keyboard
@@ -145,7 +144,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		auto node = Node::create();
 		node->setPhysicsBody(garbagePhysicsBody);
 		node->setPosition(target->getPosition());
-		addChild(node);
+		addChild(node, RenderOrder::Garbage);
 
 		CCLOG("Shooting!");
 	}
