@@ -11,6 +11,10 @@ bool GameScene::init()
 		return false;
 	}
 
+	//Create world node
+	world = Node::create();
+	addChild(world);
+
 	//Set physics engine world settings
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
@@ -19,7 +23,7 @@ bool GameScene::init()
 	auto backgroundSprite = Sprite::create("uptown/sprites/background.png");
 	backgroundSprite->setAnchorPoint({ 0.0, 0.0 });
 	backgroundSprite->setPosition(0, 0);
-	addChild(backgroundSprite, RenderOrder::Background);
+	world->addChild(backgroundSprite, RenderOrder::Background);
 
 	//Truck
 	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 96.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, -18 });
@@ -29,7 +33,7 @@ bool GameScene::init()
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
 	truckSprite->setPhysicsBody(truckPhysicsBody);
 	truckSprite->setPosition(204, 120);
-	addChild(truckSprite, RenderOrder::Truck);
+	world->addChild(truckSprite, RenderOrder::Truck);
 
 	//Test house
 	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 120.0f, 120.0f });
@@ -39,7 +43,7 @@ bool GameScene::init()
 	house->setPhysicsBody(housePhysicsBody);
 	house->setAnchorPoint({ 0.0, 0.0 });
 	house->setPosition(Vec2(1080, 120));
-	addChild(house);
+	world->addChild(house);
 
 	//Ground
 	for (unsigned int i = 0; i < 20; i++)
@@ -58,7 +62,7 @@ bool GameScene::init()
 		node->setPhysicsBody(groundPhysicsBody);
 		node->setAnchorPoint({ 0.0, 0.0 });
 		node->setPosition(Vec2(i * 540, 0));
-		addChild(node, RenderOrder::Ground);
+		world->addChild(node, RenderOrder::Ground);
 		groundSprites.push_back(node);
 	}
 
@@ -70,7 +74,7 @@ bool GameScene::init()
 	target = Sprite::create("uptown/sprites/garbage_can.png");
 	target->setAnchorPoint({ 0.5, 0.75 });
 	target->setPosition(catapultLocation);
-	addChild(target, RenderOrder::GarbageCan);
+	world->addChild(target, RenderOrder::GarbageCan);
 
 	//Create event handlers
 	//Keyboard
@@ -146,7 +150,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		auto node = Node::create();
 		node->setPhysicsBody(garbagePhysicsBody);
 		node->setPosition(target->getPosition());
-		addChild(node, RenderOrder::Garbage);
+		world->addChild(node, RenderOrder::Garbage);
 
 		CCLOG("Shooting!");
 	}

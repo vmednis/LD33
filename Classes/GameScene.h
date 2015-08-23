@@ -15,6 +15,9 @@ public:
 	CREATE_FUNC(GameScene);
 
 private:
+	//Node for use with camera
+	cocos2d::Node * world;
+
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
 	void keyboardEventHandlerOnReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
