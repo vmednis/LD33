@@ -37,39 +37,10 @@ bool GameScene::init()
 		groundSprites.push_back(node);
 	}
 	
-	//Add truck
-	auto truckPhysicsBody = PhysicsBody::createBox({ 156, 228 }, PhysicsMaterial());
-	truckPhysicsBody->setDynamic(false);
-	truckSprite = Sprite::create("uptown/sprites/truck.png");
-	truckSprite->setAnchorPoint({ 0.0, 0.0 });
-	truckSprite->setPhysicsBody(truckPhysicsBody);
-	truckSprite->setPosition(240, 120);
-	addChild(truckSprite);
-
-	//Add garbage can and the hand
-	auto garbageCanPhysicsBody = PhysicsBody::createBox({ 24, 126 }, PhysicsMaterial(), {36, 3});
-	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { 23, -3 }));
-	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 2, 114 }, PhysicsMaterial(), { -47, -3 }));
-	garbageCanPhysicsBody->addShape(PhysicsShapeBox::create({ 72, 2 }, PhysicsMaterial(), { -10, -60 }));
-	garbageCanPhysicsBody->setDynamic(true);
-	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
-	garbageCanSprite->setPhysicsBody(garbageCanPhysicsBody);
-	garbageCanSprite->setAnchorPoint({ 1.0, 1.0 });
-	garbageCanSprite->setPosition(252, 324);
-	addChild(garbageCanSprite);
-
-	//Add garbage can joint
-	auto garbageCanJoint = PhysicsJointPin::construct(garbageCanPhysicsBody, truckPhysicsBody, { 252, 324 });
-	getPhysicsWorld()->addJoint(garbageCanJoint);
-	auto garbageCanLimiter = PhysicsJointRotaryLimit::construct(truckPhysicsBody, garbageCanPhysicsBody, 0.0, (float) M_PI_2);
-	getPhysicsWorld()->addJoint(garbageCanLimiter);
-	garbageCanPhysicsBody->setAngularVelocity(0.5);
-	//auto garbageCanMotor = PhysicsJointMotor::construct(garbageCanPhysicsBody, truckPhysicsBody, -2);
-	//getPhysicsWorld()->addJoint(garbageCanMotor);
-
 	//Test garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial());
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 20, 20 }, PhysicsMaterial(1.0, 0.2, 50.0));
 	garbagePhysicsBody->setDynamic(true);
+	garbagePhysicsBody->setVelocity({ 200, 200 });
 	auto node = Node::create();
 	node->setPhysicsBody(garbagePhysicsBody);
 	node->setPosition({ 225 , 330 });
