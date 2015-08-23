@@ -17,6 +17,7 @@ static float catapultShootVelocityMultiplier = 600; //The velocity projectile wi
 enum RenderOrder
 {
 	Background,
+	GarbageCan,
 	Truck,
 	Garbage,
 	Ground,

@@ -14,7 +14,7 @@ bool GameScene::init()
 	//Set physics engine world settings
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
-	
+
 	//Background
 	auto backgroundSprite = Sprite::create("uptown/sprites/background.png");
 	backgroundSprite->setAnchorPoint({ 0.0, 0.0 });
@@ -22,7 +22,6 @@ bool GameScene::init()
 	addChild(backgroundSprite, RenderOrder::Background);
 
 	//Truck
-	//auto truckPhysicsBody = PhysicsBody::createBox({ 276.0f, 180.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f));
 	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 96.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, -18 });
 	truckPhysicsBody->addShape(PhysicsShapeBox::create({ 276.0f, 24.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0, -78 }));
 	truckPhysicsBody->setDynamic(false);
@@ -33,7 +32,7 @@ bool GameScene::init()
 	addChild(truckSprite, RenderOrder::Truck);
 
 	//Test house
-	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), {120.0f, 120.0f});
+	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 120.0f, 120.0f });
 	housePhysicsBody->setDynamic(false);
 	Node * house;
 	house = Node::create();
@@ -64,13 +63,14 @@ bool GameScene::init()
 	}
 
 	//Set catapult location
-	catapultLocation.x = 168;
-	catapultLocation.y = 231;
+	catapultLocation.x = 204;
+	catapultLocation.y = 300;
 
 	//Create target sprite
-	target = Sprite::create("placeholder.png");
+	target = Sprite::create("uptown/sprites/garbage_can.png");
+	target->setAnchorPoint({ 0.5, 0.75 });
 	target->setPosition(catapultLocation);
-	addChild(target, RenderOrder::Debug);
+	addChild(target, RenderOrder::GarbageCan);
 
 	//Create event handlers
 	//Keyboard
@@ -197,5 +197,7 @@ void GameScene::moveTarget(Vec2 mouseLocation)
 			//apply the new location5
 			target->setPosition(catapultLocation + newTargetRelativeLocation);
 		}
+		Vec2 relativeLocation = target->getPosition() - catapultLocation;
+		target->setRotation(-1 * CC_RADIANS_TO_DEGREES(relativeLocation.getAngle()) - 90);
 	}
 }
