@@ -15,6 +15,17 @@ bool GameScene::init()
 	world = Node::create();
 	addChild(world);
 
+	//Load level
+	levelController = new Level(world, { 0.0, 0.0 });
+
+	//ScoreBox debug
+	debugDrawNode = DrawNode::create();
+	for (ScoreBox box : levelController->getScoreBoxes())
+	{
+		debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12, 0.56, 1.0, 0.3));
+	}
+	world->addChild(debugDrawNode, RenderOrder::Debug);
+
 	//Set physics engine world settings
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));

@@ -1,5 +1,6 @@
 #pragma once
 #include "cocos2d.h"
+#include "Level.h"
 #include <vector>
 
 class GameScene : public cocos2d::Scene
@@ -17,6 +18,9 @@ public:
 private:
 	//Node for use with camera
 	cocos2d::Node * world;
+
+	//Level
+	Level * levelController = NULL; //TODO: delete this object somewhere
 
 	//Camera control
 	void cameraFollow();//Must be called every update
@@ -46,4 +50,5 @@ private:
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;
 	cocos2d::Vec2 catapultLocation;
+	cocos2d::DrawNode * debugDrawNode;
 };
