@@ -10,7 +10,6 @@ public:
 	//A selector callback
 	void menuStart(cocos2d::Ref* pSender);
 	void menuResize(cocos2d::Ref* pSender);
-	void setCurrentResolutionSizeID(char newID);
 
 	//Generates create function
 	CREATE_FUNC(MenuScene);
