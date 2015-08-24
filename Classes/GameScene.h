@@ -66,6 +66,7 @@ private:
 	cocos2d::DrawNode * debugDrawNode;
 
 	//HUD
+	cocos2d::Sprite * loadingScreen;
 	cocos2d::Label * HUDScoreLabel;
 	cocos2d::Sprite * HUDLevelCompleteBG;
 	cocos2d::Node * HUDLevelCompletePopup;
@@ -77,4 +78,7 @@ private:
 	void menuLevelCompleteBack(cocos2d::Ref* pRef);
 	void menuLevelCompleteRestart(cocos2d::Ref* pRef);
 	void menuLevelCompleteForward(cocos2d::Ref* pRef);
+
+	//Scene control
+	void changeScene(cocos2d::Scene * scene);
 };

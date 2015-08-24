@@ -29,7 +29,7 @@ private:
 	std::vector<cocos2d::Sprite *> backgroundSprites;
 	std::vector<cocos2d::Sprite *> groundSprites;
 	std::vector<cocos2d::Node *> loadedObjectNodes;
-	cocos2d::Node * worldBorderNode;
+	cocos2d::Node * worldBorderNode = NULL;
 	std::vector<ScoreBox> scoreBoxes;
 	float size = 0;
 	cocos2d::Node * world;

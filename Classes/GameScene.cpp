@@ -1,4 +1,6 @@
+#include "GlobalVariables.h"
 #include "GameScene.h"
+#include "LevelSelectScene.h"
 #include "GameConfig.h"
 
 USING_NS_CC;
@@ -11,20 +13,22 @@ bool GameScene::init()
 		return false;
 	}
 
+	//Create loading screen
+	loadingScreen = Sprite::create("uptown/sprites/loading.png");
+	loadingScreen->setAnchorPoint({ 0, 0 });
+	loadingScreen->setPosition({ 0, 0 });
+	loadingScreen->setOpacity(255);
+	addChild(loadingScreen, RenderOrder::Splash);
+
 	//Create world node
 	world = Node::create();
 	addChild(world);
 
-	//Load level
+	//Create level controller
 	levelController = new Level(world);
-	levelController->loadLevel("test.txt");
 
 	//ScoreBox debug
 	debugDrawNode = DrawNode::create();
-	for (ScoreBox box : levelController->getScoreBoxes())
-	{
-		debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12f, 0.56f, 1.0f, 0.3f));
-	}
 	world->addChild(debugDrawNode, RenderOrder::Debug);
 
 	//Set physics engine world settings
@@ -54,7 +58,7 @@ bool GameScene::init()
 	world->addChild(garbageCanSprite, RenderOrder::GarbageCan);
 
 	//TODO: Change this
-	gameState = GameState::BeforeShooting;
+	gameState = GameState::PreLoading;
 
 	//Create event handlers
 	//Keyboard
@@ -81,12 +85,32 @@ void GameScene::update(float delta)
 	if (gameState == GameState::PreLoading)
 	{
 		//Display the loading screen
+		//Reset important variables
+		loadingScreen->setOpacity(255);
+		setScore(0);
+		timesShot = 0;
+		showingHUDLevelCompletePopup = false;
+		catapultPulling = false;
+		catapultReady = true;
+		//Change scene
 		gameState = GameState::Loading;
 	}
 	else if (gameState == GameState::Loading)
 	{
-		//level.loadLevel("something.lvl");
+		//Load level
+		levelController->clearLevel();
+		std::string levelFilename = g_currentLevelPack + "/" + std::to_string(g_currentLevel) + ".lvl";
+		levelController->loadLevel(levelFilename);
+		//Generate score debug draw boxes
+		debugDrawNode->clear();
+		for (ScoreBox box : levelController->getScoreBoxes())
+		{
+			debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12f, 0.56f, 1.0f, 0.3f));
+		}
+		//Finish the state
 		gameState = GameState::BeforeShooting;
+		//Remove loading screen
+		loadingScreen->setOpacity(0);
 	}
 	else if (gameState == GameState::BeforeShooting)
 	{
@@ -144,18 +168,20 @@ void GameScene::update(float delta)
 				addScore(pointsAwardedNothing);
 			}
 		}
+
+		//Remove the old garbage
+		for (Node * garbage : garbageSprites)
+		{
+			//Maybe play some nice particle effects here or something?
+			garbage->removeFromParentAndCleanup(true);
+		}
+		garbageSprites.clear();
+
 		//See if player has used up all his shots
 		timesShot++;
 		if (timesShot < shotsPerLevel)
 		{
 			gameState = GameState::BeforeShooting;
-			//Remove the old garbage
-			for (Node * garbage : garbageSprites)
-			{
-				//Maybe play some nice particle effects here or something?
-				garbage->removeFromParentAndCleanup(true);
-			}
-			garbageSprites.clear();
 			cameraReset();
 		}
 		else
@@ -336,7 +362,7 @@ void GameScene::keyboardEventHandlerOnReleased(EventKeyboard::KeyCode keycode, E
 void GameScene::mouseEventHandlerOnDown(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
-	if (catapultReady)
+	if (catapultReady && gameState == GameState::BeforeShooting)
 	{
 		//Enter aiming gameState
 		gameState = GameState::Aiming;
@@ -351,7 +377,7 @@ void GameScene::mouseEventHandlerOnDown(Event * e)
 void GameScene::mouseEventHandlerOnUp(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
-	if (catapultPulling)
+	if (catapultPulling && gameState == GameState::Aiming)
 	{
 		//Shoot
 		shootGarbage();
@@ -361,7 +387,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 void GameScene::mouseEventHandlerOnMove(Event * e)
 {
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
-	if (catapultPulling)
+	if (catapultPulling && gameState == GameState::Aiming)
 	{
 		//Move garbage can to the new positions
 		moveGarbageCan({ mouseEvent->getCursorX(), mouseEvent->getCursorY() });
@@ -373,9 +399,6 @@ void GameScene::moveGarbageCan(Vec2 mouseLocation)
 	mouseLocation = world->convertToNodeSpace(mouseLocation);
 	if (catapultPulling) //Catapult is beeing pulled on
 	{
-		//if (mouseLocation.x > 204) mouseLocation.x = 204;
-		//if (mouseLocation.y > 300) mouseLocation.y = 300;
-		//if (mouseLocation.x == 204 && mouseLocation.y == 300) mouseLocation.x = 203;
 		//Apply changes in location
 		if (mouseLocation.distance(catapultLocation) < catapultPullRadius)
 		{
@@ -464,15 +487,37 @@ void GameScene::shootGarbage()
 
 void GameScene::menuLevelCompleteBack(cocos2d::Ref* pRef)
 {
+	HUDLevelCompletePopup->removeFromParent();
 	CCLOG("Back was pressed");
+	changeScene(LevelSelectScene::create());
 }
 
 void GameScene::menuLevelCompleteRestart(cocos2d::Ref* pRef)
 {
+	HUDLevelCompletePopup->removeFromParent();
 	CCLOG("Restart was pressed");
+	gameState = GameState::PreLoading;
 }
 
 void GameScene::menuLevelCompleteForward(cocos2d::Ref* pRef)
 {
+	HUDLevelCompletePopup->removeFromParent();
 	CCLOG("Forward was pressed");
+	if (g_currentLevel < 10)
+	{
+		g_currentLevel++;
+		gameState = GameState::PreLoading;
+	}
+	else
+	{
+		changeScene(LevelSelectScene::create());
+	}
+}
+
+void GameScene::changeScene(Scene* scene)
+{
+	//Delete all dynamic variables and change scene to reduce memory leaks
+	levelController->clearLevel();
+	delete levelController;
+	Director::getInstance()->replaceScene(scene);
 }

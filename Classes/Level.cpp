@@ -6,6 +6,7 @@ USING_NS_CC;
 Level::Level(cocos2d::Node * world)
 {
 	this->world = world;
+	this->size = 0;
 }
 
 void Level::loadLevel(std::string filename)
@@ -145,7 +146,10 @@ void Level::clearLevel()
 	}
 	loadedObjectNodes.clear();
 	//Remove world edge border
-	worldBorderNode->removeFromParentAndCleanup(true);
+	if (worldBorderNode != NULL)
+	{
+		worldBorderNode->removeFromParentAndCleanup(true);
+	}
 	//Remove scoreboxes
 	scoreBoxes.clear();
 }
