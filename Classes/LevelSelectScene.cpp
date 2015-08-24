@@ -78,7 +78,6 @@ bool LevelSelectScene::init()
 			node->setPosition(Vec2(1050 + (i % 5) * 150, 204 - (i / 5) * 150));
 		}
 		node->setAnchorPoint({ 0.0, 0.0 });
-		addChild(node);
 		levelSelectItems.pushBack(node);
 	}
 	auto levelSelectMenu = Menu::createWithArray(levelSelectItems);
