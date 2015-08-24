@@ -1,6 +1,7 @@
 #include "LevelSelectScene.h"
 #include "MenuScene.h"
 #include "GameScene.h"
+#include "GlobalVariables.h"
 
 USING_NS_CC;
 
@@ -97,5 +98,9 @@ void LevelSelectScene::levelSelectBack(Ref* pSender)
 
 void LevelSelectScene::levelSelectPlay(Ref* pSender, std::string levelPackID, int levelID)
 {
+	g_currentLevelPack = levelPackID;
+	g_currentLevel = levelID;
 
+	auto scene = GameScene::create();
+	Director::getInstance()->replaceScene(scene);
 }
