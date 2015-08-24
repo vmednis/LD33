@@ -31,7 +31,7 @@ private:
 	bool cameraMoveLeft = false;
 	bool cameraReseting = false;
 
-	//Stuff to handle game
+	//Stuff to handle game flow
 	bool hasGarbageStopedMoving();
 	bool hasGarbageStopedOnce = false;
 	unsigned int timesShot = 0;
@@ -44,8 +44,9 @@ private:
 	void mouseEventHandlerOnUp(cocos2d::Event * e);
 	void mouseEventHandlerOnMove(cocos2d::Event * e);
 
-	//Helper functions
+	//Shooting functions
 	void moveGarbageCan(cocos2d::Vec2 mouseLocation);
+	void shootGarbage();
 
 	//Variables
 	bool catapultPulling = false;

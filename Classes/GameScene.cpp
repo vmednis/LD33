@@ -32,12 +32,8 @@ bool GameScene::init()
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
 	//Truck
-	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 108.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, 12 }); // cab
-	truckPhysicsBody->addShape(PhysicsShapeBox::create({ 252.0f, 48.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 12, -66 })); // wheels
-	truckPhysicsBody->setDynamic(false);
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
-	truckSprite->setPhysicsBody(truckPhysicsBody);
 	truckSprite->setPosition(204, 120);
 	world->addChild(truckSprite, RenderOrder::Truck);
 
@@ -121,6 +117,7 @@ void GameScene::update(float delta)
 				{
 					//Change gameState
 					gameState = GameState::AfterShooting;
+					world->stopActionByTag(roundEndMaxTimeActionTag);
 				}
 				else
 				{
@@ -133,6 +130,7 @@ void GameScene::update(float delta)
 	}
 	else if (gameState == GameState::AfterShooting)
 	{
+		timesShot++;
 		if (timesShot < shotsPerLevel)
 		{
 			gameState = GameState::BeforeShooting;
@@ -144,10 +142,10 @@ void GameScene::update(float delta)
 			}
 			garbageSprites.clear();
 			cameraReset();
-			timesShot++;
 		}
 		else
 		{
+			//Player has already made all the shots allowed per level
 			gameState = GameState::LevelDone;
 		}
 	}
@@ -295,43 +293,7 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 	if (catapultPulling)
 	{
 		//Shoot
-		catapultPulling = false;
-		//Calculate projectile velocity
-		Vec2 relativeGarbageCanPosition = (garbageCanSprite->getPosition() - catapultLocation);
-		Vec2 shootingVelocity = relativeGarbageCanPosition * -1;
-		shootingVelocity.x = pow(sqrt(abs(shootingVelocity.x) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
-		shootingVelocity.y = pow(sqrt(abs(shootingVelocity.y) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
-		//Make sure it shoots in the right direction
-		if (relativeGarbageCanPosition.x > 0)
-		{
-			shootingVelocity.x *= -1;
-		}
-		if (relativeGarbageCanPosition.y > 0)
-		{
-			shootingVelocity.y *= -1;
-		}
-
-		//Test garbage
-		auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
-		garbagePhysicsBody->setDynamic(true);
-		garbagePhysicsBody->setVelocity(shootingVelocity);
-		auto sprite = Sprite::create("uptown/sprites/garbage.png");
-		sprite->setAnchorPoint({ 0.5, 0.5 });
-		sprite->setPhysicsBody(garbagePhysicsBody);
-		sprite->setPosition(garbageCanSprite->getPosition());
-		world->addChild(sprite, RenderOrder::Garbage);
-		garbageSprites.push_back(sprite);
-
-		//Start moving garbage can back to it's initial position
-		auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
-		auto moveActionEased = EaseElasticOut::create(moveAction->clone());
-		auto rotateAction = RotateTo::create(garbageCanResetRotationTime, 0);
-		auto rotateActionEased = EaseBackInOut::create(rotateAction->clone());
-		auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
-		garbageCanSprite->runAction(actionSpawn);
-
-		//Change the gamestate
-		gameState = GameState::Shooting;
+		shootGarbage();
 	}
 }
 
@@ -387,4 +349,54 @@ void GameScene::moveGarbageCan(Vec2 mouseLocation)
 		Vec2 relativeLocation = garbageCanSprite->getPosition() - catapultLocation;
 		garbageCanSprite->setRotation(-1 * CC_RADIANS_TO_DEGREES(relativeLocation.getAngle()) - 90);
 	}
+}
+
+void GameScene::shootGarbage()
+{
+	catapultPulling = false;
+	//Calculate projectile velocity
+	Vec2 relativeGarbageCanPosition = (garbageCanSprite->getPosition() - catapultLocation);
+	Vec2 shootingVelocity = relativeGarbageCanPosition * -1;
+	shootingVelocity.x = pow(sqrt(abs(shootingVelocity.x) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+	shootingVelocity.y = pow(sqrt(abs(shootingVelocity.y) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+	//Make sure it shoots in the right direction
+	if (relativeGarbageCanPosition.x > 0)
+	{
+		shootingVelocity.x *= -1;
+	}
+	if (relativeGarbageCanPosition.y > 0)
+	{
+		shootingVelocity.y *= -1;
+	}
+
+	//Test garbage
+	auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+	garbagePhysicsBody->setDynamic(true);
+	garbagePhysicsBody->setVelocity(shootingVelocity);
+	auto sprite = Sprite::create("uptown/sprites/garbage.png");
+	sprite->setAnchorPoint({ 0.5, 0.5 });
+	sprite->setPhysicsBody(garbagePhysicsBody);
+	sprite->setPosition(garbageCanSprite->getPosition());
+	world->addChild(sprite, RenderOrder::Garbage);
+	garbageSprites.push_back(sprite);
+
+	//Start moving garbage can back to it's initial position
+	auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
+	auto moveActionEased = EaseElasticOut::create(moveAction->clone());
+	auto rotateAction = RotateTo::create(garbageCanResetRotationTime, 0);
+	auto rotateActionEased = EaseBackInOut::create(rotateAction->clone());
+	auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
+	garbageCanSprite->runAction(actionSpawn);
+
+	//Start max round time timer
+	auto delayAction = DelayTime::create(roundEndMaxTime);
+	auto callAction = CallFunc::create([this]() {
+		gameState = GameState::AfterShooting;
+	});
+	auto sequence = Sequence::createWithTwoActions(delayAction, callAction);
+	sequence->setTag(roundEndMaxTimeActionTag);
+	world->runAction(sequence);
+
+	//Change the gamestate
+	gameState = GameState::Shooting;
 }

@@ -22,9 +22,10 @@ static float cameraMoveSpeedX = 280; //points/second
 static float cameraResetTime = 1.0; //Time it takes camera to reset position
 
 //Round ending constants
-static float roundEndGarbageMinVelocity = 0.1f;
+static float roundEndGarbageMinVelocity = 1.5f;
 static float roundEndGarbageStopSafeTime = 3.0f; //seconds
 static float roundEndMaxTime = 45.0; //seconds
+static int roundEndMaxTimeActionTag = 1;
 
 //level constants
 static unsigned int shotsPerLevel = 3;
