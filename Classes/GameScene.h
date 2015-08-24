@@ -53,6 +53,7 @@ private:
 	//Shooting functions
 	void moveGarbageCan(cocos2d::Vec2 mouseLocation);
 	void shootGarbage();
+	void addGarbage(cocos2d::Vec2 velocity);
 
 	//Variables
 	bool catapultPulling = false;

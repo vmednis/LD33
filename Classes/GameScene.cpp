@@ -34,7 +34,7 @@ bool GameScene::init()
 	world->addChild(debugDrawNode, RenderOrder::Debug);
 
 	//Set physics engine world settings
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
 	//Create HUD
@@ -462,17 +462,7 @@ void GameScene::shootGarbage()
 	}
 
 	//Spawn garbage
-	auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
-	garbagePhysicsBody->setDynamic(true);
-	garbagePhysicsBody->setVelocity(shootingVelocity);
-	std::string garbageSpritePath = g_currentLevelPack;
-	garbageSpritePath.append("/sprites/garbage.png");
-	auto sprite = Sprite::create(garbageSpritePath);
-	sprite->setAnchorPoint({ 0.5, 0.5 });
-	sprite->setPhysicsBody(garbagePhysicsBody);
-	sprite->setPosition(garbageCanSprite->getPosition());
-	world->addChild(sprite, RenderOrder::Garbage);
-	garbageSprites.push_back(sprite);
+	addGarbage(shootingVelocity);
 
 	//Start moving garbage can back to it's initial position
 	auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
@@ -493,6 +483,58 @@ void GameScene::shootGarbage()
 
 	//Change the gamestate
 	gameState = GameState::Shooting;
+}
+
+void GameScene::addGarbage(Vec2 velocity)
+{
+	for (unsigned int i = 0; i < piecesOfGarbagePerCan; i++)
+	{
+		velocity += {RandomHelper::random_real(0.0f , catapultVelocityRandomness), RandomHelper::random_real(0.0f, catapultVelocityRandomness)};
+		int j = RandomHelper::random_int(0, 2);
+		if (j == 0)
+		{
+			//Regular garbage
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			garbagePhysicsBody->setDynamic(true);
+			garbagePhysicsBody->setVelocity(velocity);
+			std::string garbageSpritePath = g_currentLevelPack;
+			garbageSpritePath.append("/sprites/garbage.png");
+			auto sprite = Sprite::create(garbageSpritePath);
+			sprite->setAnchorPoint({ 0.5, 0.5 });
+			sprite->setPhysicsBody(garbagePhysicsBody);
+			sprite->setPosition(garbageCanSprite->getPosition());
+			world->addChild(sprite, RenderOrder::Garbage);
+			garbageSprites.push_back(sprite);
+		}
+		if (j == 1)
+		{
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			garbagePhysicsBody->setDynamic(true);
+			garbagePhysicsBody->setVelocity(velocity);
+			std::string garbageSpritePath = g_currentLevelPack;
+			garbageSpritePath.append("/sprites/green_soda.png");
+			auto sprite = Sprite::create(garbageSpritePath);
+			sprite->setAnchorPoint({ 0.5, 0.5 });
+			sprite->setPhysicsBody(garbagePhysicsBody);
+			sprite->setPosition(garbageCanSprite->getPosition());
+			world->addChild(sprite, RenderOrder::Garbage);
+			garbageSprites.push_back(sprite);
+		}
+		if (j == 2)
+		{
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			garbagePhysicsBody->setDynamic(true);
+			garbagePhysicsBody->setVelocity(velocity);
+			std::string garbageSpritePath = g_currentLevelPack;
+			garbageSpritePath.append("/sprites/red_soda.png");
+			auto sprite = Sprite::create(garbageSpritePath);
+			sprite->setAnchorPoint({ 0.5, 0.5 });
+			sprite->setPhysicsBody(garbagePhysicsBody);
+			sprite->setPosition(garbageCanSprite->getPosition());
+			world->addChild(sprite, RenderOrder::Garbage);
+			garbageSprites.push_back(sprite);
+		}
+	}
 }
 
 void GameScene::menuLevelCompleteBack(cocos2d::Ref* pRef)

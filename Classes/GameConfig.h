@@ -15,6 +15,8 @@ static float worldHeight = 2 * designResolutionSize.height;
 //Catapult constants
 static float catapultPullRadius = 160; //Area where catapult can be pulled
 static float catapultShootVelocityMultiplier = 600; //The velocity projectile will have if catapult is pulled all the way back
+static float catapultVelocityRandomness = 5.0f;
+static unsigned int piecesOfGarbagePerCan = 10;
 
 //Camera
 static float camearaPaddingX = 300;
