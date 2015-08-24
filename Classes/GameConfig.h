@@ -34,6 +34,10 @@ static unsigned int shotsPerLevel = 3;
 static float garbageCanResetPositionTime = 1.0;
 static float garbageCanResetRotationTime = 1.5;
 
+//Object awarded points
+static int pointsAwardedNothing = 50;
+static int pointsAwardedFence = 250;
+
 //Rendering order of the items in scenegraph
 enum RenderOrder
 {

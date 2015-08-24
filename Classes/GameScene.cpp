@@ -37,16 +37,6 @@ bool GameScene::init()
 	truckSprite->setPosition(204, 120);
 	world->addChild(truckSprite, RenderOrder::Truck);
 
-	//Test house
-	auto housePhysicsBody = PhysicsBody::createBox({ 240.0f, 240.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 120.0f, 120.0f });
-	housePhysicsBody->setDynamic(false);
-	Node * house;
-	house = Node::create();
-	house->setPhysicsBody(housePhysicsBody);
-	house->setAnchorPoint({ 0.0, 0.0 });
-	house->setPosition(Vec2(1080, 120));
-	world->addChild(house);
-
 	//Set catapult location
 	catapultLocation.x = 204;
 	catapultLocation.y = 300;
@@ -185,7 +175,7 @@ void GameScene::cameraReset()
 	auto moveAction = MoveTo::create(cameraResetTime, { 0.0, 0.0 });
 	auto moveActionEased = EaseOut::create(moveAction->clone(), 1.0);
 	//set cameraReseting var when camera is back to it's suppoused place
-	auto callFunc = CallFunc::create([this]() {cameraReseting = true;});
+	auto callFunc = CallFunc::create([this]() {cameraReseting = false;});
 	auto sequence = Sequence::createWithTwoActions(moveActionEased, callFunc);
 	world->runAction(sequence);
 }
@@ -369,7 +359,7 @@ void GameScene::shootGarbage()
 		shootingVelocity.y *= -1;
 	}
 
-	//Test garbage
+	//Spawn garbage
 	auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 	garbagePhysicsBody->setDynamic(true);
 	garbagePhysicsBody->setVelocity(shootingVelocity);

@@ -90,6 +90,24 @@ void Level::loadLevel(std::string filename)
 	for (LoadableObject object : loadableObjects)
 	{ 
 		CCLOG("Loading %s at coords %f %f", object.name.c_str(), object.x, object.y);
+		if (object.name == "fence")
+		{
+			//Create sprite with physics box
+			auto physicsBody = PhysicsBody::createBox({ 24, 96 }, PhysicsMaterial(), { 0, -12 });
+			physicsBody->setDynamic(false);
+			auto sprite = Sprite::create("uptown/sprites/fence.png");
+			sprite->setPhysicsBody(physicsBody);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 48, object.y, 120, 120, pointsAwardedFence));
+		}
+		else
+		{
+			CCLOG("Failed to create object %s! Object doesn't exist!", object.name.c_str());
+		}
 		/*
 		*if(object.name == "Something")
 		*{
@@ -113,16 +131,19 @@ void Level::clearLevel()
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	backgroundSprites.clear();
 	//Remove ground sprites
 	for (Node * node : groundSprites)
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	groundSprites.clear();
 	//Remove loaded objects
 	for (Node * node : loadedObjectNodes)
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	loadedObjectNodes.clear();
 	//Remove world edge border
 	worldBorderNode->removeFromParentAndCleanup(true);
 	//Remove scoreboxes
