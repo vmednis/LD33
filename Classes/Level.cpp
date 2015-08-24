@@ -97,7 +97,7 @@ void Level::loadLevel(std::string filename)
 	//Create the objects that were read in the world
 	for (LoadableObject object : loadableObjects)
 	{ 
-		CCLOG("Loading %s at coords %f, %f", object.name.c_str(), object.x, object.y);
+		CCLOG("Loading %s at coords %f %f", object.name.c_str(), object.x, object.y);
 		if (object.name == "fence")
 		{
 			//Create sprite with physics box
