@@ -1,10 +1,11 @@
 #pragma once
 #include <string>
 
-char currentResolutionSizeID = 0;
-bool musicON = true;
-bool soundON = true;
-int totalScore = 0;
+//Declare global variables
+extern char currentResolutionSizeID;
+extern bool musicON;
+extern bool soundON;
+extern int totalScore;
 
-std::string g_currentLevelPack;
-int g_currentLevel;
+extern std::string g_currentLevelPack;
+extern int g_currentLevel;
