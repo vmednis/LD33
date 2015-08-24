@@ -1,5 +1,5 @@
 #include "MenuScene.h"
-#include "GameScene.h"
+#include "LevelSelectScene.h"
 #include "GameConfig.h"
 
 USING_NS_CC;
@@ -41,7 +41,7 @@ bool MenuScene::init()
 
 void MenuScene::menuStart(Ref* pSender)
 {
-	auto scene = GameScene::create();
+	auto scene = LevelSelectScene::create();
 	Director::getInstance()->replaceScene(scene);
 }
 
