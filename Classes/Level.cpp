@@ -1,3 +1,4 @@
+#include "GlobalVariables.h"
 #include "Level.h"
 #include "GameConfig.h"
 
@@ -51,7 +52,9 @@ void Level::loadLevel(std::string filename)
 	for (unsigned int i = 0; i < ((unsigned int)atof(worldSizeString.c_str()) / designResolutionSize.width) + 1; i++)
 	{
 		Sprite * node;
-		node = Sprite::create("uptown/sprites/background.png");
+		std::string backgroundSpritePath = g_currentLevelPack;
+		backgroundSpritePath.append("/sprites/background.png");
+		node = Sprite::create(backgroundSpritePath);
 		node->setAnchorPoint({ 0.0, 0.0 });
 		node->setPosition({ i * designResolutionSize.width, 0 });
 		world->addChild(node, RenderOrder::Background);
@@ -68,12 +71,16 @@ void Level::loadLevel(std::string filename)
 		{
 			auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f * groundBlocks, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { (528.0f * (groundBlocks - 1))/2, -60.0f });
 			groundPhysicsBody->setDynamic(false);
-			node = Sprite::create("uptown/sprites/street.png");
+			std::string streetSpritePath = g_currentLevelPack;
+			streetSpritePath.append("/sprites/street.png");
+			node = Sprite::create(streetSpritePath);
 			node->setPhysicsBody(groundPhysicsBody);
 		}
 		else
 		{
-			node = Sprite::create("uptown/sprites/grass.png");
+			std::string grassSpritePath = g_currentLevelPack;
+			grassSpritePath.append("/sprites/grass.png");
+			node = Sprite::create(grassSpritePath);
 		}
 		node->setAnchorPoint({ 0.0, 0.0 });
 		node->setPosition(Vec2(i * 528, 0));
@@ -96,7 +103,9 @@ void Level::loadLevel(std::string filename)
 			//Create sprite with physics box
 			auto physicsBody = PhysicsBody::createBox({ 24, 96 }, PhysicsMaterial(), { 0, -12 });
 			physicsBody->setDynamic(false);
-			auto sprite = Sprite::create("uptown/sprites/fence.png");
+			std::string fenceSpritePath = g_currentLevelPack;
+			fenceSpritePath.append("/sprites/fence.png");
+			auto sprite = Sprite::create(fenceSpritePath);
 			sprite->setPhysicsBody(physicsBody);
 			sprite->setAnchorPoint({ 0.0, 0.0 });
 			sprite->setPosition({ object.x, object.y });

@@ -1,7 +1,7 @@
+#include "GlobalVariables.h"
 #include "LevelSelectScene.h"
 #include "MenuScene.h"
 #include "GameScene.h"
-#include "GlobalVariables.h"
 
 USING_NS_CC;
 
@@ -57,25 +57,25 @@ bool LevelSelectScene::init()
 		}
 		else if (i < 30)
 		{
+			std::string filename = "factory_";
+			filename.append(std::to_string(iRel));
+			std::string filenameNormal = filename;
+			std::string filenameSelected = filename;
+			filenameNormal.append(".png");
+			filenameSelected.append("_pressed.png");
+			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "factory", iRel));
+			node->setPosition(Vec2(150 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
+		}
+		else
+		{
 			std::string filename = "downtown_";
 			filename.append(std::to_string(iRel));
 			std::string filenameNormal = filename;
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", iRel));
-			node->setPosition(Vec2(150 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
-		}
-		else
-		{
-			std::string filename = "coming_soon_";
-			filename.append(std::to_string(iRel));
-			std::string filenameNormal = filename;
-			std::string filenameSelected = filename;
-			filenameNormal.append(".png");
-			filenameSelected.append("_pressed.png");
 			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", iRel));
-			node = MenuItemImage::create("back_button", "back_button_pressed", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", iRel));
+			node = MenuItemImage::create("back_button", "back_button_pressed", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", iRel));
 			node->setPosition(Vec2(1050 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
 		}
 		node->setAnchorPoint({ 0.0, 0.0 });

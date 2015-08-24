@@ -14,7 +14,9 @@ bool GameScene::init()
 	}
 
 	//Create loading screen
-	loadingScreen = Sprite::create("uptown/sprites/loading.png");
+	std::string loadingScreenSpritePath = g_currentLevelPack;
+	loadingScreenSpritePath.append("/sprites/loading.png");
+	loadingScreen = Sprite::create(loadingScreenSpritePath);
 	loadingScreen->setAnchorPoint({ 0, 0 });
 	loadingScreen->setPosition({ 0, 0 });
 	loadingScreen->setOpacity(255);
@@ -42,7 +44,9 @@ bool GameScene::init()
 	addChild(HUDScoreLabel, RenderOrder::HUDForeground);
 
 	//Truck
-	truckSprite = Sprite::create("uptown/sprites/truck.png");
+	std::string truckSpritePath = g_currentLevelPack;
+	truckSpritePath.append("/sprites/truck.png");
+	truckSprite = Sprite::create(truckSpritePath);
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
 	truckSprite->setPosition(204, 120);
 	world->addChild(truckSprite, RenderOrder::Truck);
@@ -52,7 +56,9 @@ bool GameScene::init()
 	catapultLocation.y = 300;
 
 	//Create garbageCanSprite
-	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
+	std::string garbageCanSpritePath = g_currentLevelPack;
+	garbageCanSpritePath.append("/sprites/garbage_can.png");
+	garbageCanSprite = Sprite::create(garbageCanSpritePath);
 	garbageCanSprite->setAnchorPoint({ 0.5, 1.0 });
 	garbageCanSprite->setPosition(catapultLocation);
 	world->addChild(garbageCanSprite, RenderOrder::GarbageCan);
@@ -210,7 +216,9 @@ void GameScene::createHUDLevelCompletePopup()
 	HUDLevelCompletePopup->setAnchorPoint({ 0.5, 0.5 });
 	HUDLevelCompletePopup->setPosition({ designResolutionSize.width / 2, designResolutionSize.height / 2 });
 	addChild(HUDLevelCompletePopup);
-	HUDLevelCompleteBG = Sprite::create("uptown/sprites/level_complete.png");
+	std::string levelCompleteSpritePath = g_currentLevelPack;
+	levelCompleteSpritePath.append("/sprites/level_complete.png");
+	HUDLevelCompleteBG = Sprite::create(levelCompleteSpritePath);
 	HUDLevelCompleteBG->setAnchorPoint({ 0.5, 0.5 });
 	HUDLevelCompletePopup->addChild(HUDLevelCompleteBG, RenderOrder::HUDBackground);
 
@@ -457,7 +465,9 @@ void GameScene::shootGarbage()
 	auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 	garbagePhysicsBody->setDynamic(true);
 	garbagePhysicsBody->setVelocity(shootingVelocity);
-	auto sprite = Sprite::create("uptown/sprites/garbage.png");
+	std::string garbageSpritePath = g_currentLevelPack;
+	garbageSpritePath.append("/sprites/garbage.png");
+	auto sprite = Sprite::create(garbageSpritePath);
 	sprite->setAnchorPoint({ 0.5, 0.5 });
 	sprite->setPhysicsBody(garbagePhysicsBody);
 	sprite->setPosition(garbageCanSprite->getPosition());
