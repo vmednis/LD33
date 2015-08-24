@@ -70,6 +70,8 @@ private:
 	cocos2d::Sprite * HUDLevelCompleteBG;
 	cocos2d::Node * HUDLevelCompletePopup;
 	cocos2d::Menu * HUDLevelCompleteMenu;
+	bool showingHUDLevelCompletePopup = false;
+	void createHUDLevelCompletePopup();
 
 	//Menu callbacks
 	void menuLevelCompleteBack(cocos2d::Ref* pRef);

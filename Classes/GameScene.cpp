@@ -37,32 +37,6 @@ bool GameScene::init()
 	HUDScoreLabel->setPosition({ 0.0, designResolutionSize.height });
 	addChild(HUDScoreLabel, RenderOrder::HUDForeground);
 
-	//Level done splash
-	HUDLevelCompletePopup = Node::create();
-	HUDLevelCompletePopup->setAnchorPoint({ 0.5, 0.5 });
-	HUDLevelCompletePopup->setPosition({ designResolutionSize.width / 2, designResolutionSize.height / 2 });
-	HUDLevelCompleteBG = Sprite::create("uptown/sprites/level_complete.png");
-	HUDLevelCompleteBG->setAnchorPoint({ 0.5, 0.5 });
-	HUDLevelCompletePopup->addChild(HUDLevelCompleteBG, RenderOrder::HUDBackground);
-	//addChild(HUDLevelCompletePopup, HUDForeground);
-
-	Vector<MenuItem *> menuItems;
-	auto menuItemBack = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteBack, this));
-	menuItemBack->setAnchorPoint({ 0.5, 0.5 });
-	menuItemBack->setPosition({ -300, 0 });
-	menuItems.pushBack(menuItemBack);
-	auto menuItemRestart = MenuItemImage::create("restart_button.png", "restart_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteRestart, this));
-	menuItemRestart->setAnchorPoint({ 0.5, 0.5 });
-	menuItems.pushBack(menuItemRestart);
-	auto menuItemForward = MenuItemImage::create("forward_button.png", "forward_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteForward, this));
-	menuItemForward->setAnchorPoint({ 0.5, 0.5 });
-	menuItemForward->setPosition({ 300, 0 });
-	menuItems.pushBack(menuItemForward);
-	
-	HUDLevelCompleteMenu = Menu::createWithArray(menuItems);
-	HUDLevelCompleteMenu->setPosition({ 0, -150 });
-	HUDLevelCompletePopup->addChild(HUDLevelCompleteMenu, RenderOrder::HUDForeground);
-
 	//Truck
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
@@ -192,10 +166,44 @@ void GameScene::update(float delta)
 	}
 	else if (gameState == GameState::LevelDone)
 	{
-		//Display level done splash and maybe start loading the next level or something
+		//Display level done splash
+		if (!showingHUDLevelCompletePopup)
+		{
+			showingHUDLevelCompletePopup = true;
+			createHUDLevelCompletePopup();
+		}
 	}
 	cameraForceBounds();
 	hasGarbageStopedMoving();
+}
+
+void GameScene::createHUDLevelCompletePopup()
+{
+	//Level done splash
+	HUDLevelCompletePopup = Node::create();
+	HUDLevelCompletePopup->setAnchorPoint({ 0.5, 0.5 });
+	HUDLevelCompletePopup->setPosition({ designResolutionSize.width / 2, designResolutionSize.height / 2 });
+	addChild(HUDLevelCompletePopup);
+	HUDLevelCompleteBG = Sprite::create("uptown/sprites/level_complete.png");
+	HUDLevelCompleteBG->setAnchorPoint({ 0.5, 0.5 });
+	HUDLevelCompletePopup->addChild(HUDLevelCompleteBG, RenderOrder::HUDBackground);
+
+	Vector<MenuItem *> menuItems;
+	auto menuItemBack = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteBack, this));
+	menuItemBack->setAnchorPoint({ 0.5, 0.5 });
+	menuItemBack->setPosition({ -300, 0 });
+	menuItems.pushBack(menuItemBack);
+	auto menuItemRestart = MenuItemImage::create("restart_button.png", "restart_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteRestart, this));
+	menuItemRestart->setAnchorPoint({ 0.5, 0.5 });
+	menuItems.pushBack(menuItemRestart);
+	auto menuItemForward = MenuItemImage::create("forward_button.png", "forward_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteForward, this));
+	menuItemForward->setAnchorPoint({ 0.5, 0.5 });
+	menuItemForward->setPosition({ 300, 0 });
+	menuItems.pushBack(menuItemForward);
+
+	HUDLevelCompleteMenu = Menu::createWithArray(menuItems);
+	HUDLevelCompleteMenu->setPosition({ 0, -150 });
+	HUDLevelCompletePopup->addChild(HUDLevelCompleteMenu, RenderOrder::HUDForeground);
 }
 
 void GameScene::cameraFollow()
