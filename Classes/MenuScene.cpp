@@ -23,7 +23,7 @@ bool MenuScene::init()
 	Vector<MenuItem*> menuItems;
 	auto menuStartItem = MenuItemImage::create("menu_start.png", "menu_start_pressed.png", CC_CALLBACK_1(MenuScene::menuStart, this));
 	menuStartItem->setAnchorPoint({ 0.0, 0.0 });
-	menuStartItem->setPosition(180, 720);
+	menuStartItem->setPosition(120, 300);
 	menuItems.pushBack(menuStartItem);
 	if (currentResolutionSizeID == 0)
 	{
@@ -46,7 +46,7 @@ bool MenuScene::init()
 		menuResizeItem = MenuItemImage::create("menu_resize_large.png", "menu_resize_large_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
 	}
 	menuResizeItem->setAnchorPoint({ 0.0, 0.0 });
-	menuResizeItem->setPosition(180, 504); //180, 360
+	menuResizeItem->setPosition(120, 900); //180, 360
 	menuItems.pushBack(menuResizeItem);
 	auto menu = Menu::createWithArray(menuItems);
 	menu->setAnchorPoint({ 0.0, 0.0 });
