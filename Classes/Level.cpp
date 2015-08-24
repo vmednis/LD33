@@ -56,11 +56,11 @@ void Level::loadLevel(std::string filename)
 	}
 
 	//Ground
-	unsigned int groundBlocks = ((unsigned int)atof(worldSizeString.c_str()) / 540) + 1;
-	if (groundBlocks < designResolutionSize.width / 540) groundBlocks = (designResolutionSize.width / 540) + 1;
+	unsigned int groundBlocks = ((unsigned int)atof(worldSizeString.c_str()) / 528) + 1;
+	if (groundBlocks < designResolutionSize.width / 528) groundBlocks = (designResolutionSize.width / 528) + 1;
 	for (unsigned int i = 0; i < groundBlocks; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 540.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
+		auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
 		groundPhysicsBody->setDynamic(false);
 		Sprite * node;
 		if (i == 0)
@@ -73,7 +73,7 @@ void Level::loadLevel(std::string filename)
 		}
 		node->setPhysicsBody(groundPhysicsBody);
 		node->setAnchorPoint({ 0.0, 0.0 });
-		node->setPosition(Vec2(i * 540, 0));
+		node->setPosition(Vec2(i * 528, 0));
 		world->addChild(node, RenderOrder::Ground);
 		groundSprites.push_back(node);
 	}
