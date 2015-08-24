@@ -125,4 +125,6 @@ void Level::clearLevel()
 	}
 	//Remove world edge border
 	worldBorderNode->removeFromParentAndCleanup(true);
+	//Remove scoreboxes
+	scoreBoxes.clear();
 }
