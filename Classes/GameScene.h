@@ -29,9 +29,11 @@ private:
 	void cameraForceBounds();//Don't let the camera exit world
 	bool cameraMoveRight = false;
 	bool cameraMoveLeft = false;
+	bool cameraReseting = false;
 
-	//Functions to handle game
+	//Stuff to handle game
 	bool hasGarbageStopedMoving();
+	int gameState;
 
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);

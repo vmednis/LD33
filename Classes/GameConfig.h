@@ -19,7 +19,7 @@ static float catapultShootVelocityMultiplier = 600; //The velocity projectile wi
 //Camera
 static float camearaPaddingX = 300;
 static float cameraMoveSpeedX = 250; //points/second
-static float cameraResetTime = 3.0; //Time it takes camera to reset position
+static float cameraResetTime = 1.0; //Time it takes camera to reset position
 
 //Round ending constants
 static float roundEndGarbageMinVelocity = 0.1f;
@@ -40,5 +40,17 @@ enum RenderOrder
 	Ground,
 	GarbageCan,
 	HUD,
+	Splash,
 	Debug
+};
+
+//The state of the current game
+enum GameState
+{
+	PreLoading,
+	Loading,
+	BeforeShooting,
+	Aiming,
+	Shooting,
+	LevelDone
 };

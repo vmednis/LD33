@@ -61,6 +61,9 @@ bool GameScene::init()
 	garbageCanSprite->setPosition(catapultLocation);
 	world->addChild(garbageCanSprite, RenderOrder::GarbageCan);
 
+	//TODO: Change this
+	gameState = GameState::BeforeShooting;
+
 	//Create event handlers
 	//Keyboard
 	auto keyboardEventListener = EventListenerKeyboard::create();
@@ -83,11 +86,36 @@ bool GameScene::init()
 
 void GameScene::update(float delta)
 {
-	if (!catapultReady)
+	if (gameState == GameState::PreLoading)
+	{
+		//Display the loading screen
+		gameState = GameState::Loading;
+	}
+	else if (gameState == GameState::Loading)
+	{
+		//level.loadLevel("something.lvl");
+		gameState = GameState::BeforeShooting;
+	}
+	else if (gameState == GameState::BeforeShooting)
+	{
+		cameraUpdateMove(delta);
+		catapultReady = true;
+	}
+	else if (gameState == GameState::Aiming)
+	{
+		if (!cameraReseting && world->getPosition().x != 0)
+		{
+			cameraReset();
+		}
+	}
+	else if (gameState == GameState::Shooting)
 	{
 		cameraFollow();
 	}
-	cameraUpdateMove(delta);
+	else if (gameState == GameState::LevelDone)
+	{
+		//Display level done splash and maybe start loading the next level or something
+	}
 	cameraForceBounds();
 	hasGarbageStopedMoving();
 }
@@ -116,9 +144,13 @@ void GameScene::cameraFollow()
 
 void GameScene::cameraReset()
 {
+	cameraReseting = true;
 	auto moveAction = MoveTo::create(cameraResetTime, { 0.0, 0.0 });
 	auto moveActionEased = EaseOut::create(moveAction->clone(), 1.0);
-	world->runAction(moveAction);
+	//set cameraReseting var when camera is back to it's suppoused place
+	auto callFunc = CallFunc::create([this]() {cameraReseting = true;});
+	auto sequence = Sequence::createWithTwoActions(moveActionEased, callFunc);
+	world->runAction(sequence);
 }
 
 void GameScene::cameraUpdateMove(float delta)
@@ -208,6 +240,9 @@ void GameScene::mouseEventHandlerOnDown(Event * e)
 	auto mouseEvent = dynamic_cast<EventMouse *>(e);
 	if (catapultReady)
 	{
+		//Enter aiming gameState
+		gameState = GameState::Aiming;
+
 		//Start moving the garbage can
 		catapultPulling = true;
 		catapultReady = false;
@@ -255,6 +290,9 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		auto rotateActionEased = EaseBackInOut::create(rotateAction->clone());
 		auto actionSpawn = Spawn::createWithTwoActions(moveActionEased, rotateActionEased);
 		garbageCanSprite->runAction(actionSpawn);
+
+		//Change the gamestate
+		gameState = GameState::Shooting;
 	}
 }
 
