@@ -10,7 +10,7 @@ static cocos2d::Size almostLargeResolutionSize = cocos2d::Size(1792, 1008);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
 
 //World constants
-static float worldHeight = 2160;
+static float worldHeight = 2 * designResolutionSize.height;
 
 //Catapult constants
 static float catapultPullRadius = 150; //Area where catapult can be pulled

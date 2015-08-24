@@ -15,7 +15,9 @@ void Level::loadLevel(std::string filename)
 	std::string fileContents = FileUtils::getInstance()->getStringFromFile(filename);
 	//Read world size
 	std::string worldSizeString = fileContents.substr(0, fileContents.find("\n"));
-	setSize(atof(worldSizeString.c_str()));
+	float worldSize = atof(worldSizeString.c_str());
+	if (worldSize < designResolutionSize.width) worldSize = designResolutionSize.width;
+	setSize(worldSize);
 	fileContents = fileContents.substr(fileContents.find("\n") + 1);
 	//Read object count
 	std::string objectCountString = fileContents.substr(0, fileContents.find("\n"));
