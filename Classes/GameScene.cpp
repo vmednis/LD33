@@ -100,6 +100,7 @@ void GameScene::update(float delta)
 	{
 		cameraUpdateMove(delta);
 		catapultReady = true;
+		hasGarbageStopedOnce = false;
 	}
 	else if (gameState == GameState::Aiming)
 	{
@@ -111,6 +112,44 @@ void GameScene::update(float delta)
 	else if (gameState == GameState::Shooting)
 	{
 		cameraFollow();
+		if (hasGarbageStopedMoving() && !hasGarbageStopedOnce)
+		{
+			hasGarbageStopedOnce = true;
+			auto delay = DelayTime::create(roundEndGarbageStopSafeTime);
+			auto callFunction = CallFunc::create([this]() {
+				if (hasGarbageStopedMoving())
+				{
+					//Change gameState
+					gameState = GameState::AfterShooting;
+				}
+				else
+				{
+					hasGarbageStopedOnce = false;
+				}
+			});
+			auto sequence = Sequence::createWithTwoActions(delay, callFunction);
+			world->runAction(sequence);
+		}
+	}
+	else if (gameState == GameState::AfterShooting)
+	{
+		if (timesShot < shotsPerLevel)
+		{
+			gameState = GameState::BeforeShooting;
+			//Remove the old garbage
+			for (Node * garbage : garbageSprites)
+			{
+				//Maybe play some nice particle effects here or something?
+				garbage->removeFromParentAndCleanup(true);
+			}
+			garbageSprites.clear();
+			cameraReset();
+			timesShot++;
+		}
+		else
+		{
+			gameState = GameState::LevelDone;
+		}
 	}
 	else if (gameState == GameState::LevelDone)
 	{

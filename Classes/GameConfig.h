@@ -26,6 +26,9 @@ static float roundEndGarbageMinVelocity = 0.1f;
 static float roundEndGarbageStopSafeTime = 3.0f; //seconds
 static float roundEndMaxTime = 45.0; //seconds
 
+//level constants
+static unsigned int shotsPerLevel = 3;
+
 //Action animations
 static float garbageCanResetPositionTime = 1.0;
 static float garbageCanResetRotationTime = 1.5;
@@ -52,5 +55,6 @@ enum GameState
 	BeforeShooting,
 	Aiming,
 	Shooting,
+	AfterShooting,
 	LevelDone
 };

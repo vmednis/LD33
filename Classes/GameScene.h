@@ -33,6 +33,8 @@ private:
 
 	//Stuff to handle game
 	bool hasGarbageStopedMoving();
+	bool hasGarbageStopedOnce = false;
+	unsigned int timesShot = 0;
 	int gameState;
 
 	//Event handlers
