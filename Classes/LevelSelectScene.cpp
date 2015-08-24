@@ -23,59 +23,59 @@ bool LevelSelectScene::init()
 	levelSelectBackItem->setAnchorPoint({ 0.0, 0.0 });
 	levelSelectBackItem->setPosition(120, 936);
 	auto topMenu = Menu::create(levelSelectBackItem, NULL);
+	topMenu->setAnchorPoint({ 0.0, 0.0 });
+	topMenu->setPosition(0, 0);
 	addChild(topMenu);
 
 	//Levels
 	for (unsigned int i = 0; i < 40; i++)
 	{
+		unsigned int iRel = i % 10;
 		MenuItemImage * node;
 		if (i < 10)
 		{
 			std::string filename = "uptown_";
-			filename.append(std::to_string(i));
+			filename.append(std::to_string(iRel));
 			std::string filenameNormal = filename;
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", i));
-			node = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", i));
-			node->setPosition(Vec2(150 + (i % 5) * 150, 672 - (i / 5) * 150));
+			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", iRel));
+			node->setPosition(Vec2(150 + (iRel % 5) * 150, 672 - (iRel / 5) * 150));
 		}
 		else if (i < 20)
 		{
 			std::string filename = "countryside_";
-			filename.append(std::to_string(i));
+			filename.append(std::to_string(iRel));
 			std::string filenameNormal = filename;
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "countryside", i));
-			node = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", i));
-			node->setPosition(Vec2(150 + (i % 5) * 150, 672 - (i / 5) * 150));
+			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "countryside", iRel));
+			node->setPosition(Vec2(1050 + (iRel % 5) * 150, 672 - (iRel / 5) * 150));
 		}
 		else if (i < 30)
 		{
 			std::string filename = "downtown_";
-			filename.append(std::to_string(i));
+			filename.append(std::to_string(iRel));
 			std::string filenameNormal = filename;
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", i));
-			node = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", i));
-			node->setPosition(Vec2(1050 + (i % 5) * 150, 204 - (i / 5) * 150));
+			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", iRel));
+			node->setPosition(Vec2(150 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
 		}
 		else
 		{
 			std::string filename = "coming_soon_";
-			filename.append(std::to_string(i));
+			filename.append(std::to_string(iRel));
 			std::string filenameNormal = filename;
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", i));
-			node = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "uptown", i));
-			node->setPosition(Vec2(1050 + (i % 5) * 150, 204 - (i / 5) * 150));
+			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", iRel));
+			node = MenuItemImage::create("back_button", "back_button_pressed", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", iRel));
+			node->setPosition(Vec2(1050 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
 		}
 		node->setAnchorPoint({ 0.0, 0.0 });
 		levelSelectItems.pushBack(node);
