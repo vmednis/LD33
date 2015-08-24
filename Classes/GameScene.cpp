@@ -223,9 +223,19 @@ void GameScene::mouseEventHandlerOnUp(Event * e)
 		//Shoot
 		catapultPulling = false;
 		//Calculate projectile velocity
-		Vec2 shootingVelocity = (garbageCanSprite->getPosition() - catapultLocation) * -1;
-		shootingVelocity.x = pow(sqrt(shootingVelocity.x / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
-		shootingVelocity.y = pow(sqrt(shootingVelocity.y / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+		Vec2 relativeGarbageCanPosition = (garbageCanSprite->getPosition() - catapultLocation);
+		Vec2 shootingVelocity = relativeGarbageCanPosition * -1;
+		shootingVelocity.x = pow(sqrt(abs(shootingVelocity.x) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+		shootingVelocity.y = pow(sqrt(abs(shootingVelocity.y) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+		//Make sure it shoots in the right direction
+		if (relativeGarbageCanPosition.x > 0)
+		{
+			shootingVelocity.x *= -1;
+		}
+		if (relativeGarbageCanPosition.y > 0)
+		{
+			shootingVelocity.y *= -1;
+		}
 
 		//Test garbage
 		auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
