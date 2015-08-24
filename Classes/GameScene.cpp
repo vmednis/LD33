@@ -120,6 +120,25 @@ void GameScene::update(float delta)
 	}
 	else if (gameState == GameState::AfterShooting)
 	{
+		//Calculate score earned
+		for (Node * garbage : garbageSprites)
+		{
+			bool anyScoreAdded = false;
+			for (ScoreBox scorebox : levelController->getScoreBoxes())
+			{
+				if (garbage->getPosition().x > scorebox.getLocation().x && garbage->getPosition().x < scorebox.getLocation().x + scorebox.getSize().x 
+					&& garbage->getPosition().y > scorebox.getLocation().y && garbage->getPosition().y < scorebox.getLocation().y + scorebox.getSize().y )
+				{
+					addScore(scorebox.getPointsWorth());
+					anyScoreAdded = true;
+				}
+			}
+			if (!anyScoreAdded)
+			{
+				addScore(pointsAwardedNothing);
+			}
+		}
+		//See if player has used up all his shots
 		timesShot++;
 		if (timesShot < shotsPerLevel)
 		{
@@ -231,6 +250,12 @@ bool GameScene::hasGarbageStopedMoving()
 		}
 	}
 	return false;
+}
+
+void GameScene::addScore(unsigned int score)
+{
+	this->score += score;
+	CCLOG("Added %i score, current score = %i", score, this->score);
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)

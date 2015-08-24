@@ -36,6 +36,9 @@ private:
 	bool hasGarbageStopedOnce = false;
 	unsigned int timesShot = 0;
 	int gameState;
+	unsigned int score;
+	void addScore(unsigned int score);
+	unsigned int getScore() { return this->score; }
 
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
