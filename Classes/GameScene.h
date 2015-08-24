@@ -48,7 +48,6 @@ private:
 	bool catapultReady = true;
 
 	//Objects in game world
-	std::vector<cocos2d::Sprite *> groundSprites;
 	std::vector<cocos2d::Sprite *> garbageSprites;
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;

@@ -16,7 +16,7 @@ bool GameScene::init()
 	addChild(world);
 
 	//Load level
-	levelController = new Level(world, 1000);
+	levelController = new Level(world);
 	levelController->loadLevel("test.txt");
 
 	//ScoreBox debug
@@ -30,12 +30,6 @@ bool GameScene::init()
 	//Set physics engine world settings
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
-
-	//Background
-	auto backgroundSprite = Sprite::create("uptown/sprites/background.png");
-	backgroundSprite->setAnchorPoint({ 0.0, 0.0 });
-	backgroundSprite->setPosition(0, 0);
-	world->addChild(backgroundSprite, RenderOrder::Background);
 
 	//Truck
 	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 96.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, -18 });
@@ -56,27 +50,6 @@ bool GameScene::init()
 	house->setAnchorPoint({ 0.0, 0.0 });
 	house->setPosition(Vec2(1080, 120));
 	world->addChild(house);
-
-	//Ground
-	for (unsigned int i = 0; i < 20; i++)
-	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 540.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
-		groundPhysicsBody->setDynamic(false);
-		Sprite * node;
-		if (i == 0)
-		{
-			node = Sprite::create("uptown/sprites/street.png");
-		}
-		else
-		{
-			node = Sprite::create("uptown/sprites/grass.png");
-		}
-		node->setPhysicsBody(groundPhysicsBody);
-		node->setAnchorPoint({ 0.0, 0.0 });
-		node->setPosition(Vec2(i * 540, 0));
-		world->addChild(node, RenderOrder::Ground);
-		groundSprites.push_back(node);
-	}
 
 	//Set catapult location
 	catapultLocation.x = 204;

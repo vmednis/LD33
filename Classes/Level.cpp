@@ -3,15 +3,14 @@
 
 USING_NS_CC;
 
-Level::Level(cocos2d::Node * world, float size)
+Level::Level(cocos2d::Node * world)
 {
 	this->world = world;
-	this->size = size;
 }
 
 void Level::loadLevel(std::string filename)
 {
-	//Read object from file into the vector
+	//Read whole file contents
 	std::vector<LoadableObject> loadableObjects;
 	std::string fileContents = FileUtils::getInstance()->getStringFromFile(filename);
 	//Read world size
@@ -30,10 +29,10 @@ void Level::loadLevel(std::string filename)
 		fileContents = fileContents.substr(fileContents.find("\n") + 1);
 		//Split up object data in indvidual variables
 		std::string objectName = objectDefinition.substr(0, objectDefinition.find(","));
-		objectDefinition = objectDefinition.substr(objectDefinition.find(",")+1);
+		objectDefinition = objectDefinition.substr(objectDefinition.find(",") + 1);
 		std::string objectCoordX = objectDefinition.substr(0, objectDefinition.find(","));
-		objectDefinition = objectDefinition.substr(objectDefinition.find(",")+1);
-		std::string objectCoordY = objectDefinition;//Only this is left
+		objectDefinition = objectDefinition.substr(objectDefinition.find(",") + 1);
+		std::string objectCoordY = objectDefinition; //Only this is left
 
 		//Fillup LoadableObject
 		LoadableObject object;
@@ -45,8 +44,42 @@ void Level::loadLevel(std::string filename)
 		loadableObjects.push_back(object);
 	}
 
-	//Create the object that were read in the world
-	for(LoadableObject object : loadableObjects)
+	//Background
+	for (unsigned int i = 0; i < ((unsigned int)atof(worldSizeString.c_str()) / designResolutionSize.width) + 1; i++)
+	{
+		Sprite * node;
+		node = Sprite::create("uptown/sprites/background.png");
+		node->setAnchorPoint({ 0.0, 0.0 });
+		node->setPosition({ i * designResolutionSize.width, 0 });
+		world->addChild(node, RenderOrder::Background);
+		backgroundSprites.push_back(node);
+	}
+
+	//Ground
+	unsigned int groundBlocks = ((unsigned int)atof(worldSizeString.c_str()) / 540) + 1;
+	if (groundBlocks < designResolutionSize.width / 540) groundBlocks = (designResolutionSize.width / 540) + 1;
+	for (unsigned int i = 0; i < groundBlocks; i++)
+	{
+		auto groundPhysicsBody = PhysicsBody::createBox({ 540.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
+		groundPhysicsBody->setDynamic(false);
+		Sprite * node;
+		if (i == 0)
+		{
+			node = Sprite::create("uptown/sprites/street.png");
+		}
+		else
+		{
+			node = Sprite::create("uptown/sprites/grass.png");
+		}
+		node->setPhysicsBody(groundPhysicsBody);
+		node->setAnchorPoint({ 0.0, 0.0 });
+		node->setPosition(Vec2(i * 540, 0));
+		world->addChild(node, RenderOrder::Ground);
+		groundSprites.push_back(node);
+	}
+
+	//Create the objects that were read in the world
+	for (LoadableObject object : loadableObjects)
 	{ 
 		CCLOG("Loading %s at coords %f %f", object.name.c_str(), object.x, object.y);
 		/*
@@ -67,6 +100,14 @@ void Level::loadLevel(std::string filename)
 
 void Level::clearLevel()
 {
+	for (Node * node : backgroundSprites)
+	{
+		node->removeFromParentAndCleanup(true);
+	}
+	for (Node * node : groundSprites)
+	{
+		node->removeFromParentAndCleanup(true);
+	}
 	for (Node * node : loadedObjectNodes)
 	{
 		node->removeFromParentAndCleanup(true);
