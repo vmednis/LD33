@@ -13,12 +13,12 @@ static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
 static float worldHeight = 2 * designResolutionSize.height;
 
 //Catapult constants
-static float catapultPullRadius = 150; //Area where catapult can be pulled
+static float catapultPullRadius = 160; //Area where catapult can be pulled
 static float catapultShootVelocityMultiplier = 600; //The velocity projectile will have if catapult is pulled all the way back
 
 //Camera
 static float camearaPaddingX = 300;
-static float cameraMoveSpeedX = 250; //points/second
+static float cameraMoveSpeedX = 280; //points/second
 static float cameraResetTime = 1.0; //Time it takes camera to reset position
 
 //Round ending constants

@@ -32,8 +32,8 @@ bool GameScene::init()
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
 	//Truck
-	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 96.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, -18 });
-	truckPhysicsBody->addShape(PhysicsShapeBox::create({ 276.0f, 24.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0, -78 }));
+	auto truckPhysicsBody = PhysicsBody::createBox({ 72.0f, 108.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 102, 12 }); // cab
+	truckPhysicsBody->addShape(PhysicsShapeBox::create({ 252.0f, 48.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 12, -66 })); // wheels
 	truckPhysicsBody->setDynamic(false);
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
@@ -57,7 +57,7 @@ bool GameScene::init()
 
 	//Create garbageCanSprite
 	garbageCanSprite = Sprite::create("uptown/sprites/garbage_can.png");
-	garbageCanSprite->setAnchorPoint({ 0.5, 0.75 });
+	garbageCanSprite->setAnchorPoint({ 0.5, 1.0 });
 	garbageCanSprite->setPosition(catapultLocation);
 	world->addChild(garbageCanSprite, RenderOrder::GarbageCan);
 
