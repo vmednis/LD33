@@ -9,6 +9,9 @@ static cocos2d::Size mediumResolutionSize = cocos2d::Size(1536, 864);
 static cocos2d::Size almostLargeResolutionSize = cocos2d::Size(1792, 1008);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(1920, 1080);
 
+//World constants
+static float worldHeight = 2160;
+
 //Catapult constants
 static float catapultPullRadius = 150; //Area where catapult can be pulled
 static float catapultShootVelocityMultiplier = 600; //The velocity projectile will have if catapult is pulled all the way back
@@ -20,7 +23,7 @@ static float cameraResetTime = 3.0; //Time it takes camera to reset position
 
 //Round ending constants
 static float roundEndGarbageMinVelocity = 0.1f;
-static float roundEndGarbageStopSafeTime = 3.0f;
+static float roundEndGarbageStopSafeTime = 3.0f; //seconds
 static float roundEndMaxTime = 45.0; //seconds
 
 //Action animations

@@ -159,7 +159,7 @@ bool GameScene::hasGarbageStopedMoving()
 	if (garbageSprites.size() > 0)
 	{
 		float biggestVelocity = 0.0;
-		for (Sprite * garbage : garbageSprites)
+		for (Node * garbage : garbageSprites)
 		{
 			if (garbage->getPhysicsBody()->getVelocity().length() > biggestVelocity)
 			{

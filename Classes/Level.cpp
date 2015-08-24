@@ -78,6 +78,12 @@ void Level::loadLevel(std::string filename)
 		groundSprites.push_back(node);
 	}
 
+	//World edge
+	auto worldBorderPhysicsBody = PhysicsBody::createEdgeBox({ getSize(), worldHeight }, PHYSICSBODY_MATERIAL_DEFAULT, 1.0f, { getSize() / 2, worldHeight / 2 });
+	worldBorderNode = Node::create();
+	worldBorderNode->setPhysicsBody(worldBorderPhysicsBody);
+	world->addChild(worldBorderNode);
+
 	//Create the objects that were read in the world
 	for (LoadableObject object : loadableObjects)
 	{ 
@@ -100,16 +106,21 @@ void Level::loadLevel(std::string filename)
 
 void Level::clearLevel()
 {
+	//Remove background sprites
 	for (Node * node : backgroundSprites)
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	//Remove ground sprites
 	for (Node * node : groundSprites)
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	//Remove loaded objects
 	for (Node * node : loadedObjectNodes)
 	{
 		node->removeFromParentAndCleanup(true);
 	}
+	//Remove world edge border
+	worldBorderNode->removeFromParentAndCleanup(true);
 }
