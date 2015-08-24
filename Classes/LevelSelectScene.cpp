@@ -74,8 +74,7 @@ bool LevelSelectScene::init()
 			std::string filenameSelected = filename;
 			filenameNormal.append(".png");
 			filenameSelected.append("_pressed.png");
-			//node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "coming_soon", iRel));
-			node = MenuItemImage::create("back_button", "back_button_pressed", CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", iRel));
+			node = MenuItemImage::create(filenameNormal, filenameSelected, CC_CALLBACK_1(LevelSelectScene::levelSelectPlay, this, "downtown", iRel));
 			node->setPosition(Vec2(1050 + (iRel % 5) * 150, 204 - (iRel / 5) * 150));
 		}
 		node->setAnchorPoint({ 0.0, 0.0 });
