@@ -67,4 +67,12 @@ private:
 
 	//HUD
 	cocos2d::Label * HUDScoreLabel;
+	cocos2d::Sprite * HUDLevelCompleteBG;
+	cocos2d::Node * HUDLevelCompletePopup;
+	cocos2d::Menu * HUDLevelCompleteMenu;
+
+	//Menu callbacks
+	void menuLevelCompleteBack(cocos2d::Ref* pRef);
+	void menuLevelCompleteRestart(cocos2d::Ref* pRef);
+	void menuLevelCompleteForward(cocos2d::Ref* pRef);
 };

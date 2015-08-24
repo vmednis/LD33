@@ -47,7 +47,8 @@ enum RenderOrder
 	Garbage,
 	Ground,
 	GarbageCan,
-	HUD,
+	HUDBackground,
+	HUDForeground,
 	Splash,
 	Debug
 };

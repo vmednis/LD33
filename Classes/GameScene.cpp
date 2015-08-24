@@ -35,7 +35,33 @@ bool GameScene::init()
 	HUDScoreLabel = Label::createWithBMFont("fonts/OpenSans-Bold.fnt", "0");
 	HUDScoreLabel->setAnchorPoint({ 0.0, 1.0 });
 	HUDScoreLabel->setPosition({ 0.0, designResolutionSize.height });
-	addChild(HUDScoreLabel, RenderOrder::HUD);
+	addChild(HUDScoreLabel, RenderOrder::HUDForeground);
+
+	//Level done splash
+	HUDLevelCompletePopup = Node::create();
+	HUDLevelCompletePopup->setAnchorPoint({ 0.5, 0.5 });
+	HUDLevelCompletePopup->setPosition({ designResolutionSize.width / 2, designResolutionSize.height / 2 });
+	HUDLevelCompleteBG = Sprite::create("uptown/sprites/level_complete.png");
+	HUDLevelCompleteBG->setAnchorPoint({ 0.5, 0.5 });
+	HUDLevelCompletePopup->addChild(HUDLevelCompleteBG, RenderOrder::HUDBackground);
+	//addChild(HUDLevelCompletePopup, HUDForeground);
+
+	Vector<MenuItem *> menuItems;
+	auto menuItemBack = MenuItemImage::create("back_button.png", "back_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteBack, this));
+	menuItemBack->setAnchorPoint({ 0.5, 0.5 });
+	menuItemBack->setPosition({ -300, 0 });
+	menuItems.pushBack(menuItemBack);
+	auto menuItemRestart = MenuItemImage::create("restart_button.png", "restart_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteRestart, this));
+	menuItemRestart->setAnchorPoint({ 0.5, 0.5 });
+	menuItems.pushBack(menuItemRestart);
+	auto menuItemForward = MenuItemImage::create("forward_button.png", "forward_button_pressed.png", CC_CALLBACK_1(GameScene::menuLevelCompleteForward, this));
+	menuItemForward->setAnchorPoint({ 0.5, 0.5 });
+	menuItemForward->setPosition({ 300, 0 });
+	menuItems.pushBack(menuItemForward);
+	
+	HUDLevelCompleteMenu = Menu::createWithArray(menuItems);
+	HUDLevelCompleteMenu->setPosition({ 0, -150 });
+	HUDLevelCompletePopup->addChild(HUDLevelCompleteMenu, RenderOrder::HUDForeground);
 
 	//Truck
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
@@ -426,4 +452,19 @@ void GameScene::shootGarbage()
 
 	//Change the gamestate
 	gameState = GameState::Shooting;
+}
+
+void GameScene::menuLevelCompleteBack(cocos2d::Ref* pRef)
+{
+	CCLOG("Back was pressed");
+}
+
+void GameScene::menuLevelCompleteRestart(cocos2d::Ref* pRef)
+{
+	CCLOG("Restart was pressed");
+}
+
+void GameScene::menuLevelCompleteForward(cocos2d::Ref* pRef)
+{
+	CCLOG("Forward was pressed");
 }
