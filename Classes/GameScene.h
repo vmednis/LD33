@@ -36,8 +36,11 @@ private:
 	bool hasGarbageStopedOnce = false;
 	unsigned int timesShot = 0;
 	int gameState;
+	
+	//Score handling
 	unsigned int score;
 	void addScore(unsigned int score);
+	void setScore(unsigned int score);
 	unsigned int getScore() { return this->score; }
 
 	//Event handlers
@@ -61,4 +64,7 @@ private:
 	cocos2d::Sprite * garbageCanSprite;
 	cocos2d::Vec2 catapultLocation;
 	cocos2d::DrawNode * debugDrawNode;
+
+	//HUD
+	cocos2d::Label * HUDScoreLabel;
 };

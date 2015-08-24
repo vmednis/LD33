@@ -31,6 +31,12 @@ bool GameScene::init()
 	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
+	//Create HUD
+	HUDScoreLabel = Label::createWithBMFont("fonts/OpenSans-Bold.fnt", "0");
+	HUDScoreLabel->setAnchorPoint({ 0.0, 1.0 });
+	HUDScoreLabel->setPosition({ 0.0, designResolutionSize.height });
+	addChild(HUDScoreLabel, RenderOrder::HUD);
+
 	//Truck
 	truckSprite = Sprite::create("uptown/sprites/truck.png");
 	truckSprite->setAnchorPoint({ 0.0, 0.0 });
@@ -252,10 +258,16 @@ bool GameScene::hasGarbageStopedMoving()
 	return false;
 }
 
+void GameScene::setScore(unsigned int score)
+{
+	this->score = score;
+	//Update HUD
+	HUDScoreLabel->setString(std::to_string(score));
+}
+
 void GameScene::addScore(unsigned int score)
 {
-	this->score += score;
-	CCLOG("Added %i score, current score = %i", score, this->score);
+	setScore(getScore() + score);
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
