@@ -116,6 +116,7 @@ void GameScene::update(float delta)
 	}
 	cameraUpdateMove(delta);
 	cameraForceBounds();
+	hasGarbageStopedMoving();
 }
 
 void GameScene::cameraFollow()
@@ -178,6 +179,26 @@ void GameScene::cameraForceBounds()
 			world->setPosition({ 0, world->getPosition().y });
 		}
 	}
+}
+
+bool GameScene::hasGarbageStopedMoving()
+{
+	if (garbageSprites.size() > 0)
+	{
+		float biggestVelocity = 0.0;
+		for (Sprite * garbage : garbageSprites)
+		{
+			if (garbage->getPhysicsBody()->getVelocity().length() > biggestVelocity)
+			{
+				biggestVelocity = garbage->getPhysicsBody()->getVelocity().length();
+			}
+		}
+		if (biggestVelocity < roundEndGarbageMinVelocity)
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)

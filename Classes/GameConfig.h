@@ -18,6 +18,11 @@ static float camearaPaddingX = 300;
 static float cameraMoveSpeedX = 250; //points/second
 static float cameraResetTime = 3.0; //Time it takes camera to reset position
 
+//Round ending constants
+static float roundEndGarbageMinVelocity = 0.1f;
+static float roundEndGarbageStopSafeTime = 3.0f;
+static float roundEndMaxTime = 45.0; //seconds
+
 //Action animations
 static float garbageCanResetPositionTime = 1.0;
 static float garbageCanResetRotationTime = 1.5;
@@ -26,7 +31,7 @@ static float garbageCanResetRotationTime = 1.5;
 enum RenderOrder
 {
 	Background,
-	Entity,
+	Object,
 	Truck,
 	Garbage,
 	Ground,

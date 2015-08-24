@@ -30,6 +30,9 @@ private:
 	bool cameraMoveRight = false;
 	bool cameraMoveLeft = false;
 
+	//Functions to handle game
+	bool hasGarbageStopedMoving();
+
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
 	void keyboardEventHandlerOnReleased(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
