@@ -16,5 +16,4 @@ public:
 private:
 	cocos2d::Sprite * menuBackgroundSprite;
 	cocos2d::MenuItemImage * menuResizeItem;
-	char currentResolutionSizeID;
 };

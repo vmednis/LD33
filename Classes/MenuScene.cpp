@@ -1,3 +1,4 @@
+#include "GlobalVariables.h"
 #include "MenuScene.h"
 #include "LevelSelectScene.h"
 #include "GameConfig.h"
@@ -18,15 +19,32 @@ bool MenuScene::init()
 	menuBackgroundSprite->setPosition(0, 0);
 	addChild(menuBackgroundSprite);
 
-	currentResolutionSizeID = 0;
-
 	//Menu
 	Vector<MenuItem*> menuItems;
 	auto menuStartItem = MenuItemImage::create("menu_start.png", "menu_start_pressed.png", CC_CALLBACK_1(MenuScene::menuStart, this));
 	menuStartItem->setAnchorPoint({ 0.0, 0.0 });
 	menuStartItem->setPosition(180, 720);
 	menuItems.pushBack(menuStartItem);
-	menuResizeItem = MenuItemImage::create("menu_resize_almost_small.png", "menu_resize_almost_small_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	if (currentResolutionSizeID == 0)
+	{
+		menuResizeItem = MenuItemImage::create("menu_resize_almost_small.png", "menu_resize_almost_small_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	}
+	else if (currentResolutionSizeID == 1)
+	{
+		menuResizeItem = MenuItemImage::create("menu_resize_small.png", "menu_resize_small_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	}
+	else if (currentResolutionSizeID == 2)
+	{
+		menuResizeItem = MenuItemImage::create("menu_resize_medium.png", "menu_resize_medium_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	}
+	else if (currentResolutionSizeID == 3)
+	{
+		menuResizeItem = MenuItemImage::create("menu_resize_almost_large.png", "menu_resize_almost_large_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	}
+	else if (currentResolutionSizeID == 4)
+	{
+		menuResizeItem = MenuItemImage::create("menu_resize_large.png", "menu_resize_large_pressed.png", CC_CALLBACK_1(MenuScene::menuResize, this));
+	}
 	menuResizeItem->setAnchorPoint({ 0.0, 0.0 });
 	menuResizeItem->setPosition(180, 504); //180, 360
 	menuItems.pushBack(menuResizeItem);
