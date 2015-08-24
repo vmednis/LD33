@@ -60,18 +60,18 @@ void Level::loadLevel(std::string filename)
 	if (groundBlocks < designResolutionSize.width / 528) groundBlocks = (designResolutionSize.width / 528) + 1;
 	for (unsigned int i = 0; i < groundBlocks; i++)
 	{
-		auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { 0.0f, -60.0f });
-		groundPhysicsBody->setDynamic(false);
 		Sprite * node;
 		if (i == 0)
 		{
+			auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f * groundBlocks, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { (528.0f * (groundBlocks - 1))/2, -60.0f });
+			groundPhysicsBody->setDynamic(false);
 			node = Sprite::create("uptown/sprites/street.png");
+			node->setPhysicsBody(groundPhysicsBody);
 		}
 		else
 		{
 			node = Sprite::create("uptown/sprites/grass.png");
 		}
-		node->setPhysicsBody(groundPhysicsBody);
 		node->setAnchorPoint({ 0.0, 0.0 });
 		node->setPosition(Vec2(i * 528, 0));
 		world->addChild(node, RenderOrder::Ground);
