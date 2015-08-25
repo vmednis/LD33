@@ -1,0 +1,4 @@
+This software is using a modified version of font "Open Sans Bold" designed by Steve Matteson, Type Director of Ascender Corp. which is licensed under Apache License, version 2.0 (See FONTLICENSE.txt).
+Modifications present in this version:
+	-Font is converted in Bitmapfont
+	-Only ASCII characters are present

@@ -2,6 +2,8 @@
 #include "GameScene.h"
 #include "LevelSelectScene.h"
 #include "GameConfig.h"
+//#include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -21,6 +23,9 @@ bool GameScene::init()
 	loadingScreen->setPosition({ 0, 0 });
 	loadingScreen->setOpacity(255);
 	addChild(loadingScreen, RenderOrder::Splash);
+
+	//Start background music
+	experimental::AudioEngine::play2d("music.wav", true);
 
 	//Create world node
 	world = Node::create();
