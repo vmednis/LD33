@@ -85,6 +85,20 @@ bool LevelSelectScene::init()
 	levelSelectMenu->setPosition(0, 0);
 	addChild(levelSelectMenu);
 
+	//Not available
+	auto countrysideNotAvailableSprite = Sprite::create("not_available.png");
+	countrysideNotAvailableSprite->setAnchorPoint({ 0.0, 0.0 });
+	countrysideNotAvailableSprite->setPosition(1020, 492);
+	addChild(countrysideNotAvailableSprite);
+	auto factoryNotAvailableSprite = Sprite::create("not_available.png");
+	factoryNotAvailableSprite->setAnchorPoint({ 0.0, 0.0 });
+	factoryNotAvailableSprite->setPosition(120, 24);
+	addChild(factoryNotAvailableSprite);
+	auto downtownNotAvailableSprite = Sprite::create("not_available.png");
+	downtownNotAvailableSprite->setAnchorPoint({ 0.0, 0.0 });
+	downtownNotAvailableSprite->setPosition(1020, 24);
+	addChild(downtownNotAvailableSprite);
+
 	CCLOG("LevelSelectScene initialized successfully");
 	return true;
 }
