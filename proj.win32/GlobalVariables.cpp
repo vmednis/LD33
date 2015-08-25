@@ -2,7 +2,7 @@
 
 //Declare the global variables
 char currentResolutionSizeID = 0;
-bool musicON = true;
+bool musicON = false;
 bool soundON = true;
 int totalScore = 0;
 
