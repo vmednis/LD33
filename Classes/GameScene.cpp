@@ -31,10 +31,10 @@ bool GameScene::init()
 
 	//ScoreBox debug
 	debugDrawNode = DrawNode::create();
-	world->addChild(debugDrawNode, RenderOrder::Debug);
+	//world->addChild(debugDrawNode, RenderOrder::Debug);
 
 	//Set physics engine world settings
-	getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	//getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
 	//Create HUD
