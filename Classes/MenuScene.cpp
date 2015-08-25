@@ -3,6 +3,7 @@
 #include "LevelSelectScene.h"
 #include "GameConfig.h"
 #include "AudioEngine.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -13,9 +14,16 @@ bool MenuScene::init()
 	{
 		return false;
 	}
-
+	
 	//Start background music
+	#if (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+	//Use simple audio engine, the new one isn't suported on linux
+	auto audioEngine = CocosDenshion::SimpleAudioEngine::getInstance();
+	audioEngine->playBackgroundMusic("music.mp3", true);
+	#else
+	//Works on every other platform
 	experimental::AudioEngine::play2d("music.mp3", true);
+	#endif	
 
 	//Background
 	menuBackgroundSprite = Sprite::create("menu_background.png");
