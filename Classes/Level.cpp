@@ -138,7 +138,7 @@ void Level::loadLevel(std::string filename)
 			//Create score box
 			addScoreBox(ScoreBox(object.x - 32, object.y, 172, 330, pointsAwardedSunflower));
 		}
-		else if (object.name == "tuilp_garden")
+		else if (object.name == "tulip_garden")
 		{
 			std::string spritePath = g_currentLevelPack;
 			spritePath.append("/sprites/tulip_garden.png");
