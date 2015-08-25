@@ -146,11 +146,11 @@ xcopy "$(ProjectDir)..\Resources" "$(OutDir)" /D /E /I /F /Y
   <ItemGroup>
     <ClCompile Include="..\Classes\AppDelegate.cpp" />
     <ClCompile Include="..\Classes\GameScene.cpp" />
+    <ClCompile Include="..\Classes\GlobalVariables.cpp" />
     <ClCompile Include="..\Classes\Level.cpp" />
     <ClCompile Include="..\Classes\LevelSelectScene.cpp" />
     <ClCompile Include="..\Classes\MenuScene.cpp" />
     <ClCompile Include="..\Classes\ScoreBox.cpp" />
-    <ClCompile Include="GlobalVariables.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
