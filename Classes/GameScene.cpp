@@ -30,7 +30,7 @@ bool GameScene::init()
 	levelController = new Level(world);
 
 	//ScoreBox debug
-	debugDrawNode = DrawNode::create();
+	//debugDrawNode = DrawNode::create();
 	//world->addChild(debugDrawNode, RenderOrder::Debug);
 
 	//Set physics engine world settings
@@ -108,11 +108,13 @@ void GameScene::update(float delta)
 		std::string levelFilename = g_currentLevelPack + "/" + std::to_string(g_currentLevel) + ".lvl";
 		levelController->loadLevel(levelFilename);
 		//Generate score debug draw boxes
+		/*
 		debugDrawNode->clear();
 		for (ScoreBox box : levelController->getScoreBoxes())
 		{
 			debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12f, 0.56f, 1.0f, 0.3f));
 		}
+		*/
 		//Finish the state
 		gameState = GameState::BeforeShooting;
 		//Remove loading screen
