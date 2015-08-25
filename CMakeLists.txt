@@ -124,13 +124,24 @@ endif( WIN32 )
 
 set(GAME_SRC
   Classes/AppDelegate.cpp
-  Classes/HelloWorldScene.cpp
+  Classes/GameScene.cpp
+  Classes/GlobalVariables.cpp
+  Classes/Level.cpp
+  Classes/LevelSelectScene.cpp
+  Classes/MenuScene.cpp
+  Classes/ScoreBox.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
-  Classes/HelloWorldScene.h
+  Classes/GameConfig.h
+  Classes/GameScene.h
+  Classes/GlobalVariables.h
+  Classes/Level.h
+  Classes/LevelSelectScene.h
+  Classes/MenuScene.cpp
+  Classes/ScoreBox.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
