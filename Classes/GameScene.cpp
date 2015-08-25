@@ -31,7 +31,7 @@ bool GameScene::init()
 
 	//ScoreBox debug
 	debugDrawNode = DrawNode::create();
-	world->addChild(debugDrawNode, RenderOrder::Debug);
+	//world->addChild(debugDrawNode, RenderOrder::Debug);
 
 	//Set physics engine world settings
 	//getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
@@ -490,7 +490,7 @@ void GameScene::addGarbage(Vec2 velocity)
 	for (unsigned int i = 0; i < piecesOfGarbagePerCan; i++)
 	{
 		velocity += {RandomHelper::random_real(0.0f , catapultVelocityRandomness), RandomHelper::random_real(0.0f, catapultVelocityRandomness)};
-		int j = RandomHelper::random_int(0, 2);
+		int j = RandomHelper::random_int(0, 3);
 		if (j == 0)
 		{
 			//Regular garbage
@@ -508,6 +508,7 @@ void GameScene::addGarbage(Vec2 velocity)
 		}
 		if (j == 1)
 		{
+			//Green soda
 			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
@@ -522,11 +523,27 @@ void GameScene::addGarbage(Vec2 velocity)
 		}
 		if (j == 2)
 		{
+			//Red soda
 			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
 			std::string garbageSpritePath = g_currentLevelPack;
 			garbageSpritePath.append("/sprites/red_soda.png");
+			auto sprite = Sprite::create(garbageSpritePath);
+			sprite->setAnchorPoint({ 0.5, 0.5 });
+			sprite->setPhysicsBody(garbagePhysicsBody);
+			sprite->setPosition(garbageCanSprite->getPosition());
+			world->addChild(sprite, RenderOrder::Garbage);
+			garbageSprites.push_back(sprite);
+		}
+		if (j == 3)
+		{
+			//Dead fish
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 28.0f, 14.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			garbagePhysicsBody->setDynamic(true);
+			garbagePhysicsBody->setVelocity(velocity);
+			std::string garbageSpritePath = g_currentLevelPack;
+			garbageSpritePath.append("/sprites/fish.png");
 			auto sprite = Sprite::create(garbageSpritePath);
 			sprite->setAnchorPoint({ 0.5, 0.5 });
 			sprite->setPhysicsBody(garbagePhysicsBody);
