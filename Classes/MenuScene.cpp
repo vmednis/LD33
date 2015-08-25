@@ -15,10 +15,7 @@ bool MenuScene::init()
 	}
 
 	//Start background music
-	if (!musicON) {
-		experimental::AudioEngine::play2d("music.mp3", true);
-		musicON = true;
-	}
+	experimental::AudioEngine::play2d("music.mp3", true);
 
 	//Background
 	menuBackgroundSprite = Sprite::create("menu_background.png");
