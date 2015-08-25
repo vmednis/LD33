@@ -136,7 +136,7 @@ void Level::loadLevel(std::string filename)
 			world->addChild(sprite, RenderOrder::Object);
 			loadedObjectNodes.push_back(sprite);
 			//Create score box
-			addScoreBox(ScoreBox(object.x - 32, object.y, 172, 330, pointsAwardedSunflower));
+			addScoreBox(ScoreBox(object.x - 16, object.y, 86, 165, pointsAwardedSunflower));
 		}
 		else if (object.name == "tulip_garden")
 		{
