@@ -114,6 +114,114 @@ void Level::loadLevel(std::string filename)
 			//Create score box
 			addScoreBox(ScoreBox(object.x - 48, object.y, 120, 120, pointsAwardedFence));
 		}
+		else if (object.name == "daisy")
+		{
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/daisy.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 24, object.y, 62, 26, pointsAwardedDaisy));
+		}
+		else if (object.name == "sunflower")
+		{
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/sunflower.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 32, object.y, 172, 330, pointsAwardedSunflower));
+		}
+		else if (object.name == "tuilp_garden")
+		{
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/tulip_garden.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x, object.y, 200, 34, pointsAwardedTulipGarden));
+		}
+		else if (object.name == "garbage_can")
+		{
+			//Create sprite with physics box
+			auto physicsBody = PhysicsBody::createBox({ 60, 120 }, PhysicsMaterial(), { -6, 0 });
+			physicsBody->setDynamic(false);
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/garbage_can.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setPhysicsBody(physicsBody);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 32, object.y, 136, 152, pointsAwardedGarbageCan));
+		}
+		else if (object.name == "house")
+		{
+			//Create sprite with physics box
+			auto physicsBody = PhysicsBody::createBox({ 300, 180 }, PhysicsMaterial(), { 0, -45 });
+			Vec2 points[] = { {0, 0}, {30, 90}, {330, 90}, {360, 0} };
+			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PHYSICSSHAPE_MATERIAL_DEFAULT, { -180, 45 }));
+			physicsBody->setDynamic(false);
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/house.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setPhysicsBody(physicsBody);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 32, object.y, 424, 302, pointsAwardedHouse));
+		}
+		else if (object.name == "two_story_house")
+		{
+			//Create sprite with physics box
+			auto physicsBody = PhysicsBody::createBox({ 300, 240 }, PhysicsMaterial(), { 0, -70 });
+			Vec2 points[] = { { 0, 0 },{ 30, 90 },{ 330, 90 },{ 360, 0 } };
+			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PHYSICSSHAPE_MATERIAL_DEFAULT, { -180, 50 }));
+			physicsBody->addShape(PhysicsShapeBox::create({ 60, 108 }, PHYSICSSHAPE_MATERIAL_DEFAULT, {-84, 135}));
+			physicsBody->setDynamic(false);
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/two_story_house.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setPhysicsBody(physicsBody);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 32, object.y, 424, 412, pointsAwardedTwoStoryHouse));
+			addScoreBox(ScoreBox(object.x + 66, object.y + 380, 60, 32, pointsAwardedChimneyBonus));
+		}
+		else if (object.name == "garage")
+		{
+			//Create sprite with physics box
+			auto physicsBody = PhysicsBody::createBox({ 240, 156 }, PhysicsMaterial(), { 60, -18 });
+			physicsBody->addShape(PhysicsShapeBox::create({ 360, 36 }, PHYSICSSHAPE_MATERIAL_DEFAULT, { 0, 78 }));
+			physicsBody->setDynamic(false);
+			std::string spritePath = g_currentLevelPack;
+			spritePath.append("/sprites/garage.png");
+			auto sprite = Sprite::create(spritePath);
+			sprite->setPhysicsBody(physicsBody);
+			sprite->setAnchorPoint({ 0.0, 0.0 });
+			sprite->setPosition({ object.x, object.y });
+			world->addChild(sprite, RenderOrder::Object);
+			loadedObjectNodes.push_back(sprite);
+			//Create score box
+			addScoreBox(ScoreBox(object.x - 32, object.y, 424, 224, pointsAwardedGarage));
+			addScoreBox(ScoreBox(object.x, object.y, 120, 156, pointsAwardedInsideGarageBonus));
+		}
 		else
 		{
 			CCLOG("Failed to create object %s! Object doesn't exist!", object.name.c_str());

@@ -39,6 +39,15 @@ static float garbageCanResetRotationTime = 1.5;
 //Object awarded points
 static int pointsAwardedNothing = 50;
 static int pointsAwardedFence = 250;
+static int pointsAwardedGarbageCan = 0;
+static int pointsAwardedDaisy = 350;
+static int pointsAwardedSunflower = 300;
+static int pointsAwardedTulipGarden = 200;
+static int pointsAwardedHouse = 250;
+static int pointsAwardedTwoStoryHouse = 200;
+static int pointsAwardedChimneyBonus = 500;
+static int pointsAwardedGarage = 200;
+static int pointsAwardedInsideGarageBonus = 150;
 
 //Rendering order of the items in scenegraph
 enum RenderOrder
