@@ -49,6 +49,14 @@ static int pointsAwardedChimneyBonus = 500;
 static int pointsAwardedGarage = 200;
 static int pointsAwardedInsideGarageBonus = 150;
 
+//Physics constants
+static float physicsDensityGarbage = 1.0f;
+static float physicsDensityObjects = 1.0f;
+static float physicsFrictionGarbage = 0.95f;
+static float physicsFrictionObjects = 1.0f;
+static float physicsRestitutionGarbage = 0.3f;
+static float physicsRestitutionObjects = 0.1f;
+
 //Rendering order of the items in scenegraph
 enum RenderOrder
 {

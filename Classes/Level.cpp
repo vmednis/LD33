@@ -69,7 +69,7 @@ void Level::loadLevel(std::string filename)
 		Sprite * node;
 		if (i == 0)
 		{
-			auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f * groundBlocks, 120.0f }, PhysicsMaterial(1.0f, 0.0f, 0.9f), { (528.0f * (groundBlocks - 1))/2, -60.0f });
+			auto groundPhysicsBody = PhysicsBody::createBox({ 528.0f * groundBlocks, 120.0f }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { (528.0f * (groundBlocks - 1))/2, -60.0f });
 			groundPhysicsBody->setDynamic(false);
 			std::string streetSpritePath = g_currentLevelPack;
 			streetSpritePath.append("/sprites/street.png");
@@ -101,7 +101,7 @@ void Level::loadLevel(std::string filename)
 		if (object.name == "fence")
 		{
 			//Create sprite with physics box
-			auto physicsBody = PhysicsBody::createBox({ 24, 96 }, PhysicsMaterial(), { 0, -12 });
+			auto physicsBody = PhysicsBody::createBox({ 24, 96 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { 0, -12 });
 			physicsBody->setDynamic(false);
 			std::string fenceSpritePath = g_currentLevelPack;
 			fenceSpritePath.append("/sprites/fence.png");
@@ -153,7 +153,7 @@ void Level::loadLevel(std::string filename)
 		else if (object.name == "garbage_can")
 		{
 			//Create sprite with physics box
-			auto physicsBody = PhysicsBody::createBox({ 60, 120 }, PhysicsMaterial(), { -6, 0 });
+			auto physicsBody = PhysicsBody::createBox({ 60, 120 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { -6, 0 });
 			physicsBody->setDynamic(false);
 			std::string spritePath = g_currentLevelPack;
 			spritePath.append("/sprites/garbage_can.png");
@@ -169,9 +169,9 @@ void Level::loadLevel(std::string filename)
 		else if (object.name == "house")
 		{
 			//Create sprite with physics box
-			auto physicsBody = PhysicsBody::createBox({ 300, 180 }, PhysicsMaterial(), { 0, -45 });
+			auto physicsBody = PhysicsBody::createBox({ 300, 180 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { 0, -45 });
 			Vec2 points[] = { {0, 0}, {30, 90}, {330, 90}, {360, 0} };
-			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PHYSICSSHAPE_MATERIAL_DEFAULT, { -180, 45 }));
+			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { -180, 45 }));
 			physicsBody->setDynamic(false);
 			std::string spritePath = g_currentLevelPack;
 			spritePath.append("/sprites/house.png");
@@ -187,10 +187,10 @@ void Level::loadLevel(std::string filename)
 		else if (object.name == "two_story_house")
 		{
 			//Create sprite with physics box
-			auto physicsBody = PhysicsBody::createBox({ 300, 240 }, PhysicsMaterial(), { 0, -70 });
+			auto physicsBody = PhysicsBody::createBox({ 300, 240 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { 0, -70 });
 			Vec2 points[] = { { 0, 0 },{ 30, 90 },{ 330, 90 },{ 360, 0 } };
-			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PHYSICSSHAPE_MATERIAL_DEFAULT, { -180, 50 }));
-			physicsBody->addShape(PhysicsShapeBox::create({ 60, 108 }, PHYSICSSHAPE_MATERIAL_DEFAULT, {-84, 135}));
+			physicsBody->addShape(PhysicsShapePolygon::create(points, 4, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { -180, 50 }));
+			physicsBody->addShape(PhysicsShapeBox::create({ 60, 108 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), {-84, 135}));
 			physicsBody->setDynamic(false);
 			std::string spritePath = g_currentLevelPack;
 			spritePath.append("/sprites/two_story_house.png");
@@ -207,8 +207,8 @@ void Level::loadLevel(std::string filename)
 		else if (object.name == "garage")
 		{
 			//Create sprite with physics box
-			auto physicsBody = PhysicsBody::createBox({ 240, 156 }, PhysicsMaterial(), { 60, -18 });
-			physicsBody->addShape(PhysicsShapeBox::create({ 360, 36 }, PHYSICSSHAPE_MATERIAL_DEFAULT, { 0, 78 }));
+			auto physicsBody = PhysicsBody::createBox({ 240, 156 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { 60, -18 });
+			physicsBody->addShape(PhysicsShapeBox::create({ 360, 36 }, PhysicsMaterial(physicsDensityObjects, physicsRestitutionObjects, physicsFrictionObjects), { 0, 78 }));
 			physicsBody->setDynamic(false);
 			std::string spritePath = g_currentLevelPack;
 			spritePath.append("/sprites/garage.png");

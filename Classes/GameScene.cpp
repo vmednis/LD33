@@ -497,7 +497,7 @@ void GameScene::addGarbage(Vec2 velocity)
 		if (j == 0)
 		{
 			//Regular garbage
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
 			std::string garbageSpritePath = g_currentLevelPack;
@@ -512,7 +512,7 @@ void GameScene::addGarbage(Vec2 velocity)
 		if (j == 1)
 		{
 			//Green soda
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
 			std::string garbageSpritePath = g_currentLevelPack;
@@ -527,7 +527,7 @@ void GameScene::addGarbage(Vec2 velocity)
 		if (j == 2)
 		{
 			//Red soda
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
 			std::string garbageSpritePath = g_currentLevelPack;
@@ -542,7 +542,7 @@ void GameScene::addGarbage(Vec2 velocity)
 		if (j == 3)
 		{
 			//Dead fish
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 28.0f, 14.0f }, PhysicsMaterial(1.0f, 0.3f, 0.7f));
+			auto garbagePhysicsBody = PhysicsBody::createBox({ 28.0f, 14.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
 			garbagePhysicsBody->setDynamic(true);
 			garbagePhysicsBody->setVelocity(velocity);
 			std::string garbageSpritePath = g_currentLevelPack;
