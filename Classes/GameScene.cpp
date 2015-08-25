@@ -2,6 +2,7 @@
 #include "GameScene.h"
 #include "LevelSelectScene.h"
 #include "GameConfig.h"
+#include <cmath>
 
 USING_NS_CC;
 
@@ -421,10 +422,10 @@ void GameScene::moveGarbageCan(Vec2 mouseLocation)
 			//Find where line from mouse to catapultlocation intersects with a cirlce with radius of catapultPullRadius
 			//Get absolute size of Garbage cans relative vector edges
 			Vec2 relativeMouseLocation = mouseLocation - catapultLocation;
-			float sinalpha = abs(relativeMouseLocation.y) / abs(relativeMouseLocation.getLength());
+			float sinalpha = std::abs(relativeMouseLocation.y) / std::abs(relativeMouseLocation.getLength());
 			float GarbageCanX, GarbageCanY;
 			GarbageCanY = sinalpha * catapultPullRadius;
-			GarbageCanX = sqrt(catapultPullRadius*catapultPullRadius - GarbageCanY*GarbageCanY);
+			GarbageCanX = std::sqrt(catapultPullRadius*catapultPullRadius - GarbageCanY*GarbageCanY);
 
 			//transform absolute location in real location
 			Vec2 newGarbageCanRelativeLocation(GarbageCanX, GarbageCanY);
@@ -451,8 +452,8 @@ void GameScene::shootGarbage()
 	//Calculate projectile velocity
 	Vec2 relativeGarbageCanPosition = (garbageCanSprite->getPosition() - catapultLocation);
 	Vec2 shootingVelocity = relativeGarbageCanPosition * -1;
-	shootingVelocity.x = pow(sqrt(abs(shootingVelocity.x) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
-	shootingVelocity.y = pow(sqrt(abs(shootingVelocity.y) / catapultPullRadius) * sqrt(catapultShootVelocityMultiplier), 2);
+	shootingVelocity.x = std::pow(std::sqrt(std::abs(shootingVelocity.x) / catapultPullRadius) * std::sqrt(catapultShootVelocityMultiplier), 2);
+	shootingVelocity.y = std::pow(std::sqrt(std::abs(shootingVelocity.y) / catapultPullRadius) * std::sqrt(catapultShootVelocityMultiplier), 2);
 	//Make sure it shoots in the right direction
 	if (relativeGarbageCanPosition.x > 0)
 	{
