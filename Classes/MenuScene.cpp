@@ -2,6 +2,7 @@
 #include "MenuScene.h"
 #include "LevelSelectScene.h"
 #include "GameConfig.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -12,6 +13,9 @@ bool MenuScene::init()
 	{
 		return false;
 	}
+
+	//Start background music
+	experimental::AudioEngine::play2d("music.mp3", true);
 
 	//Background
 	menuBackgroundSprite = Sprite::create("menu_background.png");
