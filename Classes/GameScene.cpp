@@ -38,11 +38,8 @@ bool GameScene::init()
 	//getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
 	getPhysicsWorld()->setGravity(Vec2(0, -150));
 
-	//Create HUD
-	HUDScoreLabel = Label::createWithBMFont("fonts/OpenSans-Bold.fnt", "0");
-	HUDScoreLabel->setAnchorPoint({ 0.0, 1.0 });
-	HUDScoreLabel->setPosition({ 0.0, designResolutionSize.height });
-	addChild(HUDScoreLabel, RenderOrder::HUDForeground);
+	//Create score handler
+	scoreHandler = new ScoreHandler(this);
 
 	//Truck
 	std::string truckSpritePath = g_currentLevelPack;
@@ -94,7 +91,7 @@ void GameScene::update(float delta)
 		//Display the loading screen
 		//Reset important variables
 		loadingScreen->setOpacity(255);
-		setScore(0);
+		scoreHandler->setScore(0);
 		timesShot = 0;
 		showingHUDLevelCompletePopup = false;
 		catapultPulling = false;
@@ -116,6 +113,14 @@ void GameScene::update(float delta)
 			debugDrawNode->drawRect(box.getLocation(), box.getLocation() + box.getSize(), Color4F(0.12f, 0.56f, 1.0f, 0.3f));
 		}
 		*/
+		//Remove the old garbage
+		for (GarbageClass * garbage : garbagePieces)
+		{
+			garbage->getSprite()->removeFromParentAndCleanup(true);
+			delete garbage;
+			garbage = NULL;
+		}
+		garbagePieces.clear();
 		//Finish the state
 		gameState = GameState::BeforeShooting;
 		//Remove loading screen
@@ -137,55 +142,14 @@ void GameScene::update(float delta)
 	else if (gameState == GameState::Shooting)
 	{
 		cameraFollow();
-		if (hasGarbageStopedMoving() && !hasGarbageStopedOnce)
+		if (hasGarbageStopedMoving())
 		{
-			hasGarbageStopedOnce = true;
-			auto delay = DelayTime::create(roundEndGarbageStopSafeTime);
-			auto callFunction = CallFunc::create([this]() {
-				if (hasGarbageStopedMoving())
-				{
-					//Change gameState
-					gameState = GameState::AfterShooting;
-					world->stopActionByTag(roundEndMaxTimeActionTag);
-				}
-				else
-				{
-					hasGarbageStopedOnce = false;
-				}
-			});
-			auto sequence = Sequence::createWithTwoActions(delay, callFunction);
-			world->runAction(sequence);
+			gameState = GameState::AfterShooting;
+			world->stopActionByTag(roundEndMaxTimeActionTag);
 		}
 	}
 	else if (gameState == GameState::AfterShooting)
 	{
-		//Calculate score earned
-		for (Node * garbage : garbageSprites)
-		{
-			bool anyScoreAdded = false;
-			for (ScoreBox scorebox : levelController->getScoreBoxes())
-			{
-				if (garbage->getPosition().x > scorebox.getLocation().x && garbage->getPosition().x < scorebox.getLocation().x + scorebox.getSize().x 
-					&& garbage->getPosition().y > scorebox.getLocation().y && garbage->getPosition().y < scorebox.getLocation().y + scorebox.getSize().y )
-				{
-					addScore(scorebox.getPointsWorth());
-					anyScoreAdded = true;
-				}
-			}
-			if (!anyScoreAdded)
-			{
-				addScore(pointsAwardedNothing);
-			}
-		}
-
-		//Remove the old garbage
-		for (Node * garbage : garbageSprites)
-		{
-			//Maybe play some nice particle effects here or something?
-			garbage->removeFromParentAndCleanup(true);
-		}
-		garbageSprites.clear();
-
 		//See if player has used up all his shots
 		timesShot++;
 		if (timesShot < shotsPerLevel)
@@ -248,8 +212,9 @@ void GameScene::cameraFollow()
 	//Follow furthest piece of garbage with the camera
 	float furthestX = 0.0;
 	Node * furthestGarbage = NULL;
-	for (Node * garbage : garbageSprites)
+	for (GarbageClass * garbageClass : garbagePieces)
 	{
+		Node * garbage = garbageClass->getSprite();
 		if (garbage->getPosition().x > furthestX)
 		{
 			furthestX = garbage->getPosition().x;
@@ -311,34 +276,19 @@ void GameScene::cameraForceBounds()
 
 bool GameScene::hasGarbageStopedMoving()
 {
-	if (garbageSprites.size() > 0)
+	if (garbagePieces.size() > 0)
 	{
-		float biggestVelocity = 0.0;
-		for (Node * garbage : garbageSprites)
+		bool stoped = true;
+		for (GarbageClass * garbage : garbagePieces)
 		{
-			if (garbage->getPhysicsBody()->getVelocity().length() > biggestVelocity)
+			if (!garbage->hasStopedMoving())
 			{
-				biggestVelocity = garbage->getPhysicsBody()->getVelocity().length();
+				stoped = false;
 			}
 		}
-		if (biggestVelocity < roundEndGarbageMinVelocity)
-		{
-			return true;
-		}
+		return stoped;
 	}
 	return false;
-}
-
-void GameScene::setScore(unsigned int score)
-{
-	this->score = score;
-	//Update HUD
-	HUDScoreLabel->setString(std::to_string(score));
-}
-
-void GameScene::addScore(unsigned int score)
-{
-	setScore(getScore() + score);
 }
 
 void GameScene::keyboardEventHandlerOnPressed(EventKeyboard::KeyCode keycode, Event * e)
@@ -465,7 +415,14 @@ void GameScene::shootGarbage()
 	}
 
 	//Spawn garbage
-	addGarbage(shootingVelocity);
+	for (unsigned int i = 0; i < piecesOfGarbagePerCan; i++)
+	{
+		auto garbage = new GarbageClass;
+		garbage->setScoreHandler(scoreHandler);
+		garbage->setLevelController(levelController);
+		garbage->createGarbage(world, garbageCanSprite->getPosition(), shootingVelocity);
+		garbagePieces.push_back(garbage);
+	}
 
 	//Start moving garbage can back to it's initial position
 	auto moveAction = MoveTo::create(garbageCanResetPositionTime, catapultLocation);
@@ -488,75 +445,6 @@ void GameScene::shootGarbage()
 	gameState = GameState::Shooting;
 }
 
-void GameScene::addGarbage(Vec2 velocity)
-{
-	for (unsigned int i = 0; i < piecesOfGarbagePerCan; i++)
-	{
-		velocity += {RandomHelper::random_real(0.0f , catapultVelocityRandomness), RandomHelper::random_real(0.0f, catapultVelocityRandomness)};
-		int j = RandomHelper::random_int(0, 3);
-		if (j == 0)
-		{
-			//Regular garbage
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 16.0f, 16.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
-			garbagePhysicsBody->setDynamic(true);
-			garbagePhysicsBody->setVelocity(velocity);
-			std::string garbageSpritePath = g_currentLevelPack;
-			garbageSpritePath.append("/sprites/garbage.png");
-			auto sprite = Sprite::create(garbageSpritePath);
-			sprite->setAnchorPoint({ 0.5, 0.5 });
-			sprite->setPhysicsBody(garbagePhysicsBody);
-			sprite->setPosition(garbageCanSprite->getPosition());
-			world->addChild(sprite, RenderOrder::Garbage);
-			garbageSprites.push_back(sprite);
-		}
-		if (j == 1)
-		{
-			//Green soda
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
-			garbagePhysicsBody->setDynamic(true);
-			garbagePhysicsBody->setVelocity(velocity);
-			std::string garbageSpritePath = g_currentLevelPack;
-			garbageSpritePath.append("/sprites/green_soda.png");
-			auto sprite = Sprite::create(garbageSpritePath);
-			sprite->setAnchorPoint({ 0.5, 0.5 });
-			sprite->setPhysicsBody(garbagePhysicsBody);
-			sprite->setPosition(garbageCanSprite->getPosition());
-			world->addChild(sprite, RenderOrder::Garbage);
-			garbageSprites.push_back(sprite);
-		}
-		if (j == 2)
-		{
-			//Red soda
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 12.0f, 30.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
-			garbagePhysicsBody->setDynamic(true);
-			garbagePhysicsBody->setVelocity(velocity);
-			std::string garbageSpritePath = g_currentLevelPack;
-			garbageSpritePath.append("/sprites/red_soda.png");
-			auto sprite = Sprite::create(garbageSpritePath);
-			sprite->setAnchorPoint({ 0.5, 0.5 });
-			sprite->setPhysicsBody(garbagePhysicsBody);
-			sprite->setPosition(garbageCanSprite->getPosition());
-			world->addChild(sprite, RenderOrder::Garbage);
-			garbageSprites.push_back(sprite);
-		}
-		if (j == 3)
-		{
-			//Dead fish
-			auto garbagePhysicsBody = PhysicsBody::createBox({ 28.0f, 14.0f }, PhysicsMaterial(physicsDensityGarbage, physicsRestitutionGarbage, physicsFrictionGarbage));
-			garbagePhysicsBody->setDynamic(true);
-			garbagePhysicsBody->setVelocity(velocity);
-			std::string garbageSpritePath = g_currentLevelPack;
-			garbageSpritePath.append("/sprites/fish.png");
-			auto sprite = Sprite::create(garbageSpritePath);
-			sprite->setAnchorPoint({ 0.5, 0.5 });
-			sprite->setPhysicsBody(garbagePhysicsBody);
-			sprite->setPosition(garbageCanSprite->getPosition());
-			world->addChild(sprite, RenderOrder::Garbage);
-			garbageSprites.push_back(sprite);
-		}
-	}
-}
-
 void GameScene::menuLevelCompleteBack(cocos2d::Ref* pRef)
 {
 	HUDLevelCompletePopup->removeFromParent();
@@ -575,7 +463,7 @@ void GameScene::menuLevelCompleteForward(cocos2d::Ref* pRef)
 {
 	HUDLevelCompletePopup->removeFromParent();
 	CCLOG("Forward was pressed");
-	if (g_currentLevel < 10)
+	if (g_currentLevel + 1 < 10)
 	{
 		g_currentLevel++;
 		gameState = GameState::PreLoading;
@@ -591,5 +479,6 @@ void GameScene::changeScene(Scene* scene)
 	//Delete all dynamic variables and change scene to reduce memory leaks
 	levelController->clearLevel();
 	delete levelController;
+	delete scoreHandler;
 	Director::getInstance()->replaceScene(scene);
 }

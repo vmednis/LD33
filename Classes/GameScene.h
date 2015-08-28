@@ -1,6 +1,8 @@
 #pragma once
 #include "cocos2d.h"
 #include "Level.h"
+#include "Garbage.h"
+#include "ScoreHandler.h"
 #include <vector>
 
 class GameScene : public cocos2d::Scene
@@ -38,10 +40,7 @@ private:
 	int gameState;
 	
 	//Score handling
-	unsigned int score;
-	void addScore(unsigned int score);
-	void setScore(unsigned int score);
-	unsigned int getScore() { return this->score; }
+	ScoreHandler * scoreHandler;
 
 	//Event handlers
 	void keyboardEventHandlerOnPressed(cocos2d::EventKeyboard::KeyCode keycode, cocos2d::Event * e);
@@ -53,14 +52,13 @@ private:
 	//Shooting functions
 	void moveGarbageCan(cocos2d::Vec2 mouseLocation);
 	void shootGarbage();
-	void addGarbage(cocos2d::Vec2 velocity);
 
 	//Variables
 	bool catapultPulling = false;
 	bool catapultReady = true;
 
 	//Objects in game world
-	std::vector<cocos2d::Sprite *> garbageSprites;
+	std::vector<GarbageClass *> garbagePieces;
 	cocos2d::Sprite * truckSprite;
 	cocos2d::Sprite * garbageCanSprite;
 	cocos2d::Vec2 catapultLocation;
@@ -68,7 +66,6 @@ private:
 
 	//HUD
 	cocos2d::Sprite * loadingScreen;
-	cocos2d::Label * HUDScoreLabel;
 	cocos2d::Sprite * HUDLevelCompleteBG;
 	cocos2d::Node * HUDLevelCompletePopup;
 	cocos2d::Menu * HUDLevelCompleteMenu;

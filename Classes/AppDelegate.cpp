@@ -69,7 +69,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
 
-    // if you use SimpleAudioEngine, it must be pause
+    // if you use SimpleAudioEngine, it must be paused
 	CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
 }
 
