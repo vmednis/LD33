@@ -36,6 +36,9 @@
     <ClCompile Include="..\Classes\GlobalVariables.cpp">
       <Filter>src</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Garbage.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -63,6 +66,9 @@
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\GlobalVariables.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Garbage.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
